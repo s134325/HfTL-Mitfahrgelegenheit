@@ -31,6 +31,14 @@ public class TripResponse
 	 * @param trips
 	 *            the trips to set
 	 */
+	public void setTrip(Trip trips) {
+		this.trips.add(trips);
+	}
+	
+	/**
+	 * @param trips
+	 *            the trips to set
+	 */
 	public void setTrips(ArrayList<Trip> trips) {
 		this.trips = trips;
 	}

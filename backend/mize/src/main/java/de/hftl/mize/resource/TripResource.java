@@ -1,5 +1,6 @@
 package de.hftl.mize.resource;
 
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
@@ -8,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.wordnik.swagger.annotations.*;
 
-import de.hftl.mize.model.Status;
+import de.hftl.mize.dao.TripDAO;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.response.TripResponse;
 
@@ -30,7 +31,9 @@ public class TripResource {
 	{
 		TripResponse response = new TripResponse();
 
-		LOGGER.debug("Get trip " + tripUUId);
+		TripDAO t = new TripDAO();
+
+		response.setTrip(t.getTrip(tripUUId));
 
 		return Response.status(200).entity(response).build();
 
@@ -49,9 +52,9 @@ public class TripResource {
 	{
 		TripResponse response = new TripResponse();
 
-		response.setStatus(new Status(200, "works"));
+		TripDAO t = new TripDAO();
 
-		LOGGER.debug("Get all trips");
+		response.setTrips(t.getTrips(latitude, longitude, radius));
 
 		return Response.status(200).entity(response).build();
 
