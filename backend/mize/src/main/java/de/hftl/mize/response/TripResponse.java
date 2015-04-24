@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import de.hftl.mize.model.Status;
 import de.hftl.mize.model.Trip;
 
-public class TripResponse
-{
+public class TripResponse {
 	public ArrayList<Trip>	trips	= new ArrayList<Trip>();
 	public Status			status;
 
@@ -23,7 +22,8 @@ public class TripResponse
 	/**
 	 * @return the trips
 	 */
-	public ArrayList<Trip> getTrips() {
+	public ArrayList<Trip> getTrips()
+	{
 		return trips;
 	}
 
@@ -31,22 +31,25 @@ public class TripResponse
 	 * @param trips
 	 *            the trips to set
 	 */
-	public void setTrip(Trip trips) {
-		this.trips.add(trips);
+	public void setTrip(Trip trip)
+	{
+		this.trips.add(trip);
 	}
-	
+
 	/**
 	 * @param trips
 	 *            the trips to set
 	 */
-	public void setTrips(ArrayList<Trip> trips) {
+	public void setTrips(ArrayList<Trip> trips)
+	{
 		this.trips = trips;
 	}
 
 	/**
 	 * @return the status
 	 */
-	public Status getStatus() {
+	public Status getStatus()
+	{
 		return status;
 	}
 
@@ -54,7 +57,8 @@ public class TripResponse
 	 * @param status
 	 *            the status to set
 	 */
-	public void setStatus(Status status) {
+	public void setStatus(Status status)
+	{
 		this.status = status;
 	}
 
@@ -62,7 +66,8 @@ public class TripResponse
 	 * @param trips
 	 *            the trip to add
 	 */
-	public void addTrips(Trip trip) {
+	public void addTrips(Trip trip)
+	{
 		this.trips.add(trip);
 	}
 
@@ -72,7 +77,8 @@ public class TripResponse
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "TripResponse [trips=" + trips + ", status=" + status + "]";
 	}
 

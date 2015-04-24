@@ -2,14 +2,14 @@ package de.hftl.mize.model;
 
 public class Status
 {
-	public Integer	code;
+	public String	code;
 	public String	message;
 
 	public Status() {
 		super();
 	}
 
-	public Status(Integer code, String message) {
+	public Status(String code, String message) {
 		super();
 		this.code = code;
 		this.message = message;
@@ -18,7 +18,7 @@ public class Status
 	/**
 	 * @return the code
 	 */
-	public Integer getCode() {
+	public String getCode() {
 		return code;
 	}
 
@@ -26,7 +26,7 @@ public class Status
 	 * @param code
 	 *            the code to set
 	 */
-	public void setCode(Integer code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

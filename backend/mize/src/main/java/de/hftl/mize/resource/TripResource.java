@@ -1,6 +1,5 @@
 package de.hftl.mize.resource;
 
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
@@ -11,6 +10,7 @@ import com.wordnik.swagger.annotations.*;
 
 import de.hftl.mize.dao.TripDAO;
 import de.hftl.mize.model.Trip;
+import de.hftl.mize.process.TripHandler;
 import de.hftl.mize.response.TripResponse;
 
 @Path("/trips")
@@ -29,14 +29,7 @@ public class TripResource {
 	public Response getTripByUUID(
 			@ApiParam(value = "UUID of trip that needs to be fetched", required = true) @PathParam("tripUUID") String tripUUId)
 	{
-		TripResponse response = new TripResponse();
-
-		TripDAO t = new TripDAO();
-
-		response.setTrip(t.getTrip(tripUUId));
-
-		return Response.status(200).entity(response).build();
-
+		return TripHandler.getTrip(tripUUId).build();
 	}
 
 	@GET
@@ -50,14 +43,7 @@ public class TripResource {
 			@ApiParam(value = "Longitude of the Geo Coordinate", required = false) @QueryParam("longitude") Double longitude,
 			@ApiParam(value = "The radius with the geo coordinates as center", required = false) @QueryParam("radius") Integer radius)
 	{
-		TripResponse response = new TripResponse();
-
-		TripDAO t = new TripDAO();
-
-		response.setTrips(t.getTrips(latitude, longitude, radius));
-
-		return Response.status(200).entity(response).build();
-
+		return TripHandler.getTrips(latitude, longitude, radius).build();
 	}
 
 	@POST
@@ -68,11 +54,7 @@ public class TripResource {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response createTrip(Trip trip)
 	{
-		TripResponse response = new TripResponse();
-
-		LOGGER.debug("POST trip " + trip.toString());
-
-		return Response.status(200).entity(response).build();
+		return TripHandler.insertTrip(trip).build();
 	}
 
 	@PUT
@@ -86,11 +68,7 @@ public class TripResource {
 			Trip trip,
 			@ApiParam(value = "UUID of trip that needs to be updated", required = true) @PathParam("tripUUID") String tripUUId)
 	{
-		TripResponse response = new TripResponse();
-
-		LOGGER.debug("PUT trip " + tripUUId);
-
-		return Response.ok().entity(response).build();
+		return TripHandler.updateTrip(tripUUId, trip).build();
 	}
 
 	@DELETE
@@ -103,11 +81,6 @@ public class TripResource {
 	public Response deleteTrip(
 			@ApiParam(value = "UUID of trip that needs to be deleted", required = true) @PathParam("tripUUID") String tripUUId)
 	{
-		TripResponse response = new TripResponse();
-
-		LOGGER.debug("DELETE trip " + tripUUId);
-
-		return Response.status(200).entity(response).build();
-
+		return TripHandler.deleteTrip(tripUUId).build();
 	}
 }

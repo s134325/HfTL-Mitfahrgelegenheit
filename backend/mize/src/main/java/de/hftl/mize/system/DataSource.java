@@ -36,7 +36,7 @@ public class DataSource {
 			bds.setUsername(props.getProperty("DB_USERNAME"));
 			bds.setPassword(props.getProperty("DB_PASSWORD"));
 			bds.setInitialSize(CONN_POOL_SIZE);
-			
+
 			LOGGER.trace("Done.");
 
 		}

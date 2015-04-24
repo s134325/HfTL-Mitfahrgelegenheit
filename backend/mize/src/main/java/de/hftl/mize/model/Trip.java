@@ -2,22 +2,45 @@ package de.hftl.mize.model;
 
 import java.util.UUID;
 
-public class Trip
-{
-	public UUID		uuid;
-	public Location	from;
-	public Location	to;
-	public String	startTime;
-	public Integer	freeSeats;
-	public String	description;
-	public Double	price;
-	public Boolean	active;
-	public String	createTime;
-	public String	updateTime;
+/**
+ * Represents a trip
+ * 
+ * @author tokilian
+ *
+ */
+public class Trip {
+	
+	public UUID uuid;
+	public Location from;
+	public Location to;
+	public String startTime;
+	public Integer freeSeats;
+	public String description;
+	public Double price;
+	public Boolean active;
+	public String createTime;
+	public String updateTime;
 
+	/**
+	 * Constructor
+	 */
 	public Trip() {
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param uuid
+	 * @param from
+	 * @param to
+	 * @param startTime
+	 * @param freeSeats
+	 * @param description
+	 * @param price
+	 * @param active
+	 * @param createTime
+	 * @param updateTime
+	 */
 	public Trip(UUID uuid, Location from, Location to, String startTime,
 			Integer freeSeats, String description, Double price,
 			Boolean active, String createTime, String updateTime) {
@@ -57,7 +80,7 @@ public class Trip
 	public void setTo(Location to) {
 		this.to = to;
 	}
-
+	
 	public String getStartTime() {
 		return startTime;
 	}
