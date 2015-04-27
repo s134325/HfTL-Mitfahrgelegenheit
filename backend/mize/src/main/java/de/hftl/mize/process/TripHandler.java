@@ -6,20 +6,25 @@ import java.util.UUID;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.apache.log4j.Logger;
-
 import de.hftl.mize.dao.TripDAO;
 import de.hftl.mize.dao.i.ITripDAO;
 import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.response.BaseResponse;
 import de.hftl.mize.response.TripResponse;
+import de.hftl.mize.response.VehicleResponse;
 import de.hftl.mize.system.Helper;
 
 public class TripHandler {
 
-	private static Logger	LOGGER	= Logger.getRootLogger();
-
+	/**
+	 * Builds the response and returns a {@link VehicleResponse} within a
+	 * {@link ResponseBuilder}
+	 * 
+	 * @param tripUUId
+	 *            The external {@link UUID} of the trip
+	 * @return {@link ResponseBuilder}
+	 */
 	public static ResponseBuilder getTrip(String tripUUId)
 	{
 
@@ -42,6 +47,18 @@ public class TripHandler {
 
 	}
 
+	/**
+	 * Builds the response and returns a {@link VehicleResponse} within a
+	 * {@link ResponseBuilder}
+	 * 
+	 * @param latitude
+	 *            {@link Double} The latitude of the geocoordinates
+	 * @param longitude
+	 *            {@link Double} The longitude of the geocoordinates
+	 * @param radius
+	 *            {@link Integer} The radius
+	 * @return {@link ResponseBuilder}
+	 */
 	public static ResponseBuilder getTrips(Double latitude, Double longitude,
 			Integer radius)
 	{
@@ -72,6 +89,14 @@ public class TripHandler {
 		}
 	}
 
+	/**
+	 * Builds the response and returns a {@link VehicleResponse} within a
+	 * {@link ResponseBuilder}
+	 * 
+	 * @param trip
+	 *            The {@link Trip} object
+	 * @return {@link ResponseBuilder}
+	 */
 	public static ResponseBuilder insertTrip(Trip trip)
 	{
 
@@ -93,6 +118,16 @@ public class TripHandler {
 		}
 	}
 
+	/**
+	 * Builds the response and returns a {@link VehicleResponse} within a
+	 * {@link ResponseBuilder}
+	 * 
+	 * @param tripUUId
+	 *            The external {@link UUID} of the trip
+	 * @param trip
+	 *            The {@link Trip} object
+	 * @return {@link ResponseBuilder}
+	 */
 	public static ResponseBuilder updateTrip(String tripUUId, Trip trip)
 	{
 
@@ -111,7 +146,7 @@ public class TripHandler {
 						BusinessException.TRIP_UPDATE_FAILED);
 			}
 
-			response.setResourceId(tripUUId.toString());
+			response.setResourceId(tripUUId);
 
 			return Response.status(200).entity(response);
 		}
@@ -121,6 +156,14 @@ public class TripHandler {
 		}
 	}
 
+	/**
+	 * Builds the response and returns a {@link VehicleResponse} within a
+	 * {@link ResponseBuilder}
+	 * 
+	 * @param tripUUId
+	 *            The external {@link UUID} of the trip
+	 * @return {@link ResponseBuilder}
+	 */
 	public static ResponseBuilder deleteTrip(String tripUUId)
 	{
 
@@ -138,7 +181,7 @@ public class TripHandler {
 						BusinessException.TRIP_DELETE_FAILED);
 			}
 
-			response.setResourceId(tripUUId.toString());
+			response.setResourceId(tripUUId);
 
 			return Response.status(200).entity(response);
 		}

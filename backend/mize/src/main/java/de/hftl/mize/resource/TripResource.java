@@ -1,14 +1,23 @@
 package de.hftl.mize.resource;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.*;
 
-import org.apache.log4j.Logger;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
-import com.wordnik.swagger.annotations.*;
-
-import de.hftl.mize.dao.TripDAO;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.process.TripHandler;
 import de.hftl.mize.response.TripResponse;
@@ -17,14 +26,13 @@ import de.hftl.mize.response.TripResponse;
 @Api(value = "/trips", description = "Operations about trips")
 @Produces({ MediaType.APPLICATION_JSON })
 public class TripResource {
-	private static Logger	LOGGER	= Logger.getRootLogger();
 
 	@GET
 	@Path("/{tripUUID}")
 	@ApiOperation(value = "Find trip by UUID", notes = "Returns a trip", response = TripResponse.class)
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Invalid ID supplied"),
-			@ApiResponse(code = 404, message = "Trip not found") })
+			@ApiResponse(code = 404, message = "Invalid ID supplied"),
+			@ApiResponse(code = 500, message = "Other Error") })
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response getTripByUUID(
 			@ApiParam(value = "UUID of trip that needs to be fetched", required = true) @PathParam("tripUUID") String tripUUId)

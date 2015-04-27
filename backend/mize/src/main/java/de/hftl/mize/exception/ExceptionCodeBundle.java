@@ -9,6 +9,13 @@ public class ExceptionCodeBundle extends ListResourceBundle {
 			{ BusinessException.TRIP_NOT_FOUND, new Integer(404) },
 			{ BusinessException.TRIP_UPDATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_DELETE_FAILED, new Integer(500) },
+
+			{ BusinessException.VEHICLE_NOT_FOUND, new Integer(404) },
+			{ BusinessException.VEHICLE_UPDATE_FAILED, new Integer(500) },
+			{ BusinessException.VEHICLE_DELETE_FAILED, new Integer(500) },
+
+			{ BusinessException.USER_NOT_FOUND, new Integer(404) },
+
 			{ BusinessException.MYSQL_ERROR, new Integer(500) } };
 
 	@Override

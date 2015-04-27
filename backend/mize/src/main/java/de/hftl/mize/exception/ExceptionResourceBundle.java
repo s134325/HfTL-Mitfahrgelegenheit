@@ -15,7 +15,14 @@ public class ExceptionResourceBundle extends ListResourceBundle {
 			// BusinessException
 			{ BusinessException.TRIP_NOT_FOUND, "Trip does not exist." },
 			{ BusinessException.TRIP_UPDATE_FAILED, "Trip update failed." },
-			{ BusinessException.TRIP_DELETE_FAILED, "Trip delte failed." },
+			{ BusinessException.TRIP_DELETE_FAILED, "Trip delete failed." },
+
+			{ BusinessException.VEHICLE_NOT_FOUND, "Vehicle does not exist." },
+			{ BusinessException.VEHICLE_UPDATE_FAILED, "Vehicle update failed." },
+			{ BusinessException.VEHICLE_DELETE_FAILED, "Vehicle delete failed." },
+
+			{ BusinessException.USER_NOT_FOUND, "User does not exist." },
+
 			{ BusinessException.MYSQL_ERROR, "Internal Server Error." } };
 
 	@Override

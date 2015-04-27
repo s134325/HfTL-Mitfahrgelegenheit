@@ -10,16 +10,23 @@ import org.apache.log4j.Logger;
 
 import com.mysql.jdbc.Statement;
 
+import de.hftl.mize.dao.i.ILocationDAO;
 import de.hftl.mize.model.Coordinate;
 import de.hftl.mize.model.Country;
 import de.hftl.mize.model.Location;
 import de.hftl.mize.system.DataSource;
 
-public class LocationDAO {
+/**
+ * Deals with all persistence aspects of a {@link Location}
+ * 
+ * @author tokilian
+ *
+ */
+public class LocationDAO implements ILocationDAO {
 
 	private static Logger	LOGGER	= Logger.getRootLogger();
 
-	protected static Location getLocation(Integer id)
+	public Location getLocation(Integer id)
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -82,7 +89,7 @@ public class LocationDAO {
 		return null;
 	}
 
-	protected static Integer setLocation(Location location)
+	public Integer setLocation(Location location)
 	{
 
 		Connection connection = null;

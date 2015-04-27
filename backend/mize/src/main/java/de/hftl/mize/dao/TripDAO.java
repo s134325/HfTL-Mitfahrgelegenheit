@@ -1,15 +1,16 @@
 package de.hftl.mize.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
 
+import de.hftl.mize.dao.i.ILocationDAO;
 import de.hftl.mize.dao.i.ITripDAO;
 import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.model.Location;
@@ -17,7 +18,7 @@ import de.hftl.mize.model.Trip;
 import de.hftl.mize.system.DataSource;
 
 /**
- * Deals with all persistence aspects of a Trip
+ * Deals with all persistence aspects of a {@link Trip}
  * 
  * @author tokilian
  *
@@ -39,6 +40,7 @@ public class TripDAO implements ITripDAO {
 		ResultSet resultSet = null;
 
 		ArrayList<Trip> alTrip = new ArrayList<Trip>();
+		ILocationDAO locationDAO = new LocationDAO();
 
 		try
 		{
@@ -56,9 +58,9 @@ public class TripDAO implements ITripDAO {
 
 				Trip trip = new Trip();
 
-				Location from = LocationDAO.getLocation(resultSet
+				Location from = locationDAO.getLocation(resultSet
 						.getInt("location_id_from"));
-				Location to = LocationDAO.getLocation(resultSet
+				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
 				trip.setUuid(UUID.fromString(resultSet.getString("id")));
@@ -115,6 +117,7 @@ public class TripDAO implements ITripDAO {
 		ResultSet resultSet = null;
 
 		ArrayList<Trip> alTrip = new ArrayList<Trip>();
+		ILocationDAO locationDAO = new LocationDAO();
 
 		try
 		{
@@ -137,9 +140,9 @@ public class TripDAO implements ITripDAO {
 
 				Trip trip = new Trip();
 
-				Location from = LocationDAO.getLocation(resultSet
+				Location from = locationDAO.getLocation(resultSet
 						.getInt("location_id_from"));
-				Location to = LocationDAO.getLocation(resultSet
+				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
 				trip.setUuid(UUID.fromString(resultSet.getString("id")));
@@ -191,6 +194,8 @@ public class TripDAO implements ITripDAO {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
+		ILocationDAO locationDAO = new LocationDAO();
+
 		try
 		{
 			BasicDataSource bds = DataSource.getInstance().getBds();
@@ -209,9 +214,9 @@ public class TripDAO implements ITripDAO {
 			if (resultSet.next())
 			{
 
-				Location from = LocationDAO.getLocation(resultSet
+				Location from = locationDAO.getLocation(resultSet
 						.getInt("location_id_from"));
-				Location to = LocationDAO.getLocation(resultSet
+				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
 				trip.setUuid(UUID.fromString(resultSet.getString("id")));
@@ -261,18 +266,21 @@ public class TripDAO implements ITripDAO {
 	 * @throws BusinessException
 	 */
 	// TODO: What would be useful?
-	public Boolean updateTrip(UUID uuid, Trip trip) throws BusinessException
+	public Boolean updateTrip(UUID tripUUID, Trip trip)
+			throws BusinessException
 	{
 
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
+		ILocationDAO locationDAO = new LocationDAO();
+
 		try
 		{
 
-			Integer locationFromId = LocationDAO.setLocation(trip.getFrom());
-			Integer locationToId = LocationDAO.setLocation(trip.getTo());
+			Integer locationFromId = locationDAO.setLocation(trip.getFrom());
+			Integer locationToId = locationDAO.setLocation(trip.getTo());
 
 			BasicDataSource bds = DataSource.getInstance().getBds();
 
@@ -281,7 +289,7 @@ public class TripDAO implements ITripDAO {
 			statement = connection.prepareStatement(" UPDATE trip " + " SET "
 					+ " WHERE uuid = ? ");
 
-			statement.setString(1, uuid.toString());
+			statement.setString(1, tripUUID.toString());
 			statement.setInt(2, locationFromId);
 			statement.setInt(3, locationToId);
 			statement.setString(4, trip.getStartTime());
@@ -331,11 +339,13 @@ public class TripDAO implements ITripDAO {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
+		ILocationDAO locationDAO = new LocationDAO();
+
 		try
 		{
-			UUID uuid = UUID.randomUUID();
-			Integer locationFromId = LocationDAO.setLocation(trip.getFrom());
-			Integer locationToId = LocationDAO.setLocation(trip.getTo());
+			UUID tripUUID = UUID.randomUUID();
+			Integer locationFromId = locationDAO.setLocation(trip.getFrom());
+			Integer locationToId = locationDAO.setLocation(trip.getTo());
 
 			BasicDataSource bds = DataSource.getInstance().getBds();
 
@@ -346,7 +356,7 @@ public class TripDAO implements ITripDAO {
 							+ "(uuid, from, to, startTime, freeSeats, description, price, active, updateTime) VALUES"
 							+ "(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-			statement.setString(1, uuid.toString());
+			statement.setString(1, tripUUID.toString());
 			statement.setInt(2, locationFromId);
 			statement.setInt(3, locationToId);
 			statement.setString(4, trip.getStartTime());
@@ -358,7 +368,7 @@ public class TripDAO implements ITripDAO {
 
 			statement.executeUpdate();
 
-			return uuid;
+			return tripUUID;
 
 		}
 		catch (SQLException e)
@@ -390,7 +400,7 @@ public class TripDAO implements ITripDAO {
 	 * @return a Boolean showing weather the delete process was successful
 	 * @throws BusinessException
 	 */
-	public Boolean deleteTrip(UUID uuid) throws BusinessException
+	public Boolean deleteTrip(UUID tripUUID) throws BusinessException
 	{
 
 		Connection connection = null;
@@ -407,7 +417,7 @@ public class TripDAO implements ITripDAO {
 			statement = connection
 					.prepareStatement("DELETE FROM trip WHERE uuid = ?");
 
-			statement.setString(1, uuid.toString());
+			statement.setString(1, tripUUID.toString());
 
 			statement.executeUpdate();
 

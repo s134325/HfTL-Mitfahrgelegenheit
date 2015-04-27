@@ -4,11 +4,10 @@ import de.hftl.mize.model.Status;
 
 public class BaseResponse {
 
-	public Status status;
-	public String resourceId;
+	public Status	status;
+	public String	resourceId;
 
 	public BaseResponse() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public BaseResponse(Status status) {
@@ -25,7 +24,8 @@ public class BaseResponse {
 	/**
 	 * @return the status
 	 */
-	public Status getStatus() {
+	public Status getStatus()
+	{
 		return status;
 	}
 
@@ -33,14 +33,16 @@ public class BaseResponse {
 	 * @param status
 	 *            the status to set
 	 */
-	public void setStatus(Status status) {
+	public void setStatus(Status status)
+	{
 		this.status = status;
 	}
 
 	/**
 	 * @return the resourceId
 	 */
-	public String getResourceId() {
+	public String getResourceId()
+	{
 		return resourceId;
 	}
 
@@ -48,7 +50,8 @@ public class BaseResponse {
 	 * @param resourceId
 	 *            the resourceId to set
 	 */
-	public void setResourceId(String resourceId) {
+	public void setResourceId(String resourceId)
+	{
 		this.resourceId = resourceId;
 	}
 
@@ -58,7 +61,8 @@ public class BaseResponse {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Response [status=" + status + ", resourceId=" + resourceId
 				+ "]";
 	}

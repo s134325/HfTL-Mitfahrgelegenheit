@@ -28,8 +28,8 @@ public class TripResponse {
 	}
 
 	/**
-	 * @param trips
-	 *            the trips to set
+	 * @param trip
+	 *            the trip to set
 	 */
 	public void setTrip(Trip trip)
 	{
@@ -63,7 +63,7 @@ public class TripResponse {
 	}
 
 	/**
-	 * @param trips
+	 * @param trip
 	 *            the trip to add
 	 */
 	public void addTrips(Trip trip)

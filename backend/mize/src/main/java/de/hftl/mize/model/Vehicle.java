@@ -2,14 +2,16 @@ package de.hftl.mize.model;
 
 import java.util.UUID;
 
-public class Vehicle
-{
+public class Vehicle {
 	public String	make;
 	public String	model;
 	public Integer	seats;
 	// TODO: try to hide it when delivering the JSON
 	public UUID		userId;
-	
+
+	public Vehicle() {
+	}
+
 	public Vehicle(String make, String model, Integer seats, UUID userId) {
 		super();
 		this.make = make;
@@ -21,7 +23,8 @@ public class Vehicle
 	/**
 	 * @return the make
 	 */
-	public String getMake() {
+	public String getMake()
+	{
 		return make;
 	}
 
@@ -29,14 +32,16 @@ public class Vehicle
 	 * @param make
 	 *            the make to set
 	 */
-	public void setMake(String make) {
+	public void setMake(String make)
+	{
 		this.make = make;
 	}
 
 	/**
 	 * @return the model
 	 */
-	public String getModel() {
+	public String getModel()
+	{
 		return model;
 	}
 
@@ -44,14 +49,16 @@ public class Vehicle
 	 * @param model
 	 *            the model to set
 	 */
-	public void setModel(String model) {
+	public void setModel(String model)
+	{
 		this.model = model;
 	}
 
 	/**
 	 * @return the seats
 	 */
-	public Integer getSeats() {
+	public Integer getSeats()
+	{
 		return seats;
 	}
 
@@ -59,14 +66,16 @@ public class Vehicle
 	 * @param seats
 	 *            the seats to set
 	 */
-	public void setSeats(Integer seats) {
+	public void setSeats(Integer seats)
+	{
 		this.seats = seats;
 	}
 
 	/**
 	 * @return the userId
 	 */
-	public UUID getUserId() {
+	public UUID getUserId()
+	{
 		return userId;
 	}
 
@@ -74,7 +83,8 @@ public class Vehicle
 	 * @param userId
 	 *            the userId to set
 	 */
-	public void setUserId(UUID userId) {
+	public void setUserId(UUID userId)
+	{
 		this.userId = userId;
 	}
 
@@ -84,7 +94,8 @@ public class Vehicle
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Vehicle [make=" + make + ", model=" + model + ", seats="
 				+ seats + ", userId=" + userId + "]";
 	}
