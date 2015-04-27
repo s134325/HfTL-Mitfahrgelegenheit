@@ -29,7 +29,7 @@ public class VehicleResource {
 
 	@GET
 	@Path("/id/{vehicleUUID}")
-	@ApiOperation(value = "Find trip by UUID", notes = "Returns a vehicle by UUID if the user is allowed to retrieve the information", response = VehicleResponse.class)
+	@ApiOperation(value = "Find vehicle by UUID", notes = "Returns a vehicle by UUID if the user is allowed to retrieve the information", response = VehicleResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 404, message = "Invalid ID supplied"),
 			@ApiResponse(code = 500, message = "Other Error") })
@@ -54,7 +54,7 @@ public class VehicleResource {
 	}
 
 	@POST
-	@ApiOperation(value = "Create a trip", notes = "Creates a new trip based on the JSON", response = VehicleResponse.class)
+	@ApiOperation(value = "Create a vehicle", notes = "Creates a new vehicle based on the JSON", response = VehicleResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
@@ -73,7 +73,7 @@ public class VehicleResource {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response updateVehicle(
 			Vehicle vehicle,
-			@ApiParam(value = "UUID of trip that needs to be updated", required = true) @PathParam("vehicleUUID") String vehicleUUID)
+			@ApiParam(value = "UUID of vehicle that needs to be updated", required = true) @PathParam("vehicleUUID") String vehicleUUID)
 	{
 		return VehicleHandler.updateVehicle(vehicleUUID, vehicle).build();
 	}
@@ -86,7 +86,7 @@ public class VehicleResource {
 			@ApiResponse(code = 404, message = "Trip not found") })
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response deleteVehicle(
-			@ApiParam(value = "UUID of trip that needs to be deleted", required = true) @PathParam("vehicleUUID") String vehicleUUID)
+			@ApiParam(value = "UUID of vehicle that needs to be deleted", required = true) @PathParam("vehicleUUID") String vehicleUUID)
 	{
 		return VehicleHandler.deleteVehicle(vehicleUUID).build();
 	}
