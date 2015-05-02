@@ -9,13 +9,14 @@ import de.hftl.mize.model.Location;
  * @author Tobias
  *
  */
-public interface ILocationDAO {
+public interface ILocationDAO
+{
 
 	/**
 	 * Get a location by ID
 	 * 
 	 * @param id
-	 *            The id of the location
+	 *            Integer The id of the location
 	 * @return {@link Location}
 	 * @throws BusinessException
 	 */

@@ -8,42 +8,55 @@ import java.util.UUID;
  * @author tokilian
  *
  */
-public class Trip {
-	
-	public UUID uuid;
-	public Location from;
-	public Location to;
-	public String startTime;
-	public Integer freeSeats;
-	public String description;
-	public Double price;
-	public Boolean active;
-	public String createTime;
-	public String updateTime;
+public class Trip
+{
+
+	public UUID		uuid;
+	public Location	from;
+	public Location	to;
+	public String	startTime;
+	public Integer	freeSeats;
+	public String	description;
+	public Double	price;
+	public Boolean	active;
+	public String	createTime;
+	public String	updateTime;
 
 	/**
 	 * Constructor
 	 */
-	public Trip() {
+	public Trip()
+	{
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param uuid
+	 *            {@link UUID}
 	 * @param from
+	 *            {@link Location}
 	 * @param to
+	 *            {@link Location}
 	 * @param startTime
+	 *            String
 	 * @param freeSeats
+	 *            Integer
 	 * @param description
+	 *            String
 	 * @param price
+	 *            Double
 	 * @param active
+	 *            Boolean
 	 * @param createTime
+	 *            String
 	 * @param updateTime
+	 *            String
 	 */
 	public Trip(UUID uuid, Location from, Location to, String startTime,
 			Integer freeSeats, String description, Double price,
-			Boolean active, String createTime, String updateTime) {
+			Boolean active, String createTime, String updateTime)
+	{
 		super();
 		this.uuid = uuid;
 		this.from = from;
@@ -57,93 +70,183 @@ public class Trip {
 		this.updateTime = updateTime;
 	}
 
-	public UUID getUuid() {
+	/**
+	 * @return the uuid
+	 */
+	public UUID getUuid()
+	{
 		return uuid;
 	}
 
-	public void setUuid(UUID uuid) {
+	/**
+	 * @param uuid
+	 *            the uuid to set
+	 */
+	public void setUuid(UUID uuid)
+	{
 		this.uuid = uuid;
 	}
 
-	public Location getFrom() {
+	/**
+	 * @return the from
+	 */
+	public Location getFrom()
+	{
 		return from;
 	}
 
-	public void setFrom(Location from) {
+	/**
+	 * @param from
+	 *            the from to set
+	 */
+	public void setFrom(Location from)
+	{
 		this.from = from;
 	}
 
-	public Location getTo() {
+	/**
+	 * @return the to
+	 */
+	public Location getTo()
+	{
 		return to;
 	}
 
-	public void setTo(Location to) {
+	/**
+	 * @param to
+	 *            the to to set
+	 */
+	public void setTo(Location to)
+	{
 		this.to = to;
 	}
-	
-	public String getStartTime() {
+
+	/**
+	 * @return the startTime
+	 */
+	public String getStartTime()
+	{
 		return startTime;
 	}
 
-	public void setStartTime(String startTime) {
+	/**
+	 * @param startTime
+	 *            the startTime to set
+	 */
+	public void setStartTime(String startTime)
+	{
 		this.startTime = startTime;
 	}
 
-	public Integer getFreeSeats() {
+	/**
+	 * @return the freeSeats
+	 */
+	public Integer getFreeSeats()
+	{
 		return freeSeats;
 	}
 
-	public void setFreeSeats(Integer freeSeats) {
+	/**
+	 * @param freeSeats
+	 *            the freeSeats to set
+	 */
+	public void setFreeSeats(Integer freeSeats)
+	{
 		this.freeSeats = freeSeats;
 	}
 
-	public String getDescription() {
+	/**
+	 * @return the description
+	 */
+	public String getDescription()
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public Double getPrice() {
+	/**
+	 * @return the price
+	 */
+	public Double getPrice()
+	{
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	/**
+	 * @param price
+	 *            the price to set
+	 */
+	public void setPrice(Double price)
+	{
 		this.price = price;
 	}
 
-	public Boolean getActive() {
+	/**
+	 * @return the active
+	 */
+	public Boolean getActive()
+	{
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	/**
+	 * @param active
+	 *            the active to set
+	 */
+	public void setActive(Boolean active)
+	{
 		this.active = active;
 	}
 
-	public String getCreateTime() {
+	/**
+	 * @return the createTime
+	 */
+	public String getCreateTime()
+	{
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	/**
+	 * @param createTime
+	 *            the createTime to set
+	 */
+	public void setCreateTime(String createTime)
+	{
 		this.createTime = createTime;
 	}
 
-	public String getUpdateTime() {
+	/**
+	 * @return the updateTime
+	 */
+	public String getUpdateTime()
+	{
 		return updateTime;
 	}
 
-	public void setUpdateTime(String updateTime) {
+	/**
+	 * @param updateTime
+	 *            the updateTime to set
+	 */
+	public void setUpdateTime(String updateTime)
+	{
 		this.updateTime = updateTime;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Trip [uuid=" + uuid + ", from=" + from.toString() + ", to="
 				+ to.toString() + ", startTime=" + startTime + ", freeSeats="
 				+ freeSeats + ", description=" + description + ", price="

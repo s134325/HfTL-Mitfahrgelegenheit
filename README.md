@@ -2,12 +2,12 @@
 
 ## Welcome to MiZe the "MitfahrZentrale" for HfTL
 
-The goal of MiZe is to help students which are currently enroled in the HfTL to find trips from or to the HfTL.
+The goal of MiZe is to help students which are currently enrolled in the HfTL to find trips from or to the HfTL.
 
 ## Current Versions
 
 ### API
-0.0.2
+0.1.0
 
 ### Frontend
 coming soon ;)

@@ -5,15 +5,37 @@ import java.util.ArrayList;
 import de.hftl.mize.model.Status;
 import de.hftl.mize.model.Trip;
 
-public class TripResponse {
+/**
+ * Represents a response containing of a status and a list of {@link Trip}s,
+ * sized >= 1
+ * 
+ * @author Tobias
+ *
+ */
+public class TripResponse
+{
 	public ArrayList<Trip>	trips	= new ArrayList<Trip>();
 	public Status			status;
 
-	public TripResponse() {
+	/**
+	 * Constructor.
+	 */
+	public TripResponse()
+	{
 		super();
 	}
 
-	public TripResponse(ArrayList<Trip> trips, Status status) {
+	/**
+	 * 
+	 * Constructor.
+	 * 
+	 * @param trips
+	 *            {@link ArrayList} of {@link Trip}
+	 * @param status
+	 *            {@link Status}
+	 */
+	public TripResponse(ArrayList<Trip> trips, Status status)
+	{
 		super();
 		this.trips = trips;
 		this.status = status;
@@ -73,7 +95,6 @@ public class TripResponse {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

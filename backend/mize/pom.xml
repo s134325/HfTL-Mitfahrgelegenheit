@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hftl.mize</groupId>
 	<artifactId>mize</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>HfTL Mitfahrgelegenheit</name>
 	<build>
@@ -13,13 +13,21 @@
 				<version>2.4</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<failOnMissingWebXml>true</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
-	
+
 		<!-- JAX-RS2 + Swagger -->
 		<dependency>
 			<groupId>com.wordnik</groupId>
@@ -45,5 +53,13 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.5</version>
 		</dependency>
+
+		<!-- Apache commons, used to convert the JSON input stream -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
 	</dependencies>
 </project>

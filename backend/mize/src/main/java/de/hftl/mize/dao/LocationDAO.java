@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import com.mysql.jdbc.Statement;
 
 import de.hftl.mize.dao.i.ILocationDAO;
+import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.model.Coordinate;
 import de.hftl.mize.model.Country;
 import de.hftl.mize.model.Location;
@@ -22,11 +23,15 @@ import de.hftl.mize.system.DataSource;
  * @author tokilian
  *
  */
-public class LocationDAO implements ILocationDAO {
+public class LocationDAO implements ILocationDAO
+{
 
 	private static Logger	LOGGER	= Logger.getRootLogger();
 
-	public Location getLocation(Integer id)
+	/**
+	 * Get a location by ID
+	 */
+	public Location getLocation(Integer id) throws BusinessException
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -61,35 +66,39 @@ public class LocationDAO implements ILocationDAO {
 				location.setCountry(Country.valueOf(resultSet
 						.getString("country")));
 				location.setGeoCoordinate(geoCoordinate);
+
+				return location;
+			}
+			else
+			{
+
+				throw new BusinessException(
+						BusinessException.LOCATION_NOT_FOUND);
 			}
 
-			return location;
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
-			LOGGER.fatal(e);
-		}
-		finally
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
-				LOGGER.error(e);
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
-
-		return null;
 	}
 
-	public Integer setLocation(Location location)
+	/**
+	 * Set a location with the {@link Location} object
+	 */
+	public Integer setLocation(Location location) throws BusinessException
 	{
 
 		Connection connection = null;
@@ -107,7 +116,7 @@ public class LocationDAO implements ILocationDAO {
 					.prepareStatement(
 							"INSERT INTO location "
 									+ "(street, streetNumber, zipCode, city, country, latitude, longitude) VALUES"
-									+ "(?, ?, ?, ?, ?, ?, ?)",
+									+ "(?, ?, ?, ?, ?, ?, ?);",
 							Statement.RETURN_GENERATED_KEYS);
 
 			statement.setString(1, location.getStreet());
@@ -126,28 +135,28 @@ public class LocationDAO implements ILocationDAO {
 			{
 				return rs.getInt(1);
 			}
+			else
+			{
+				throw new BusinessException(
+						BusinessException.LOCATION_CREATE_FAILED);
+			}
 
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
-			LOGGER.fatal(e);
-		}
-		finally
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
-				LOGGER.error(e);
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
-		return null;
 	}
 }

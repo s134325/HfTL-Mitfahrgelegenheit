@@ -9,18 +9,20 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import de.hftl.mize.dao.VehicleDAO;
 import de.hftl.mize.dao.i.IVehicleDAO;
 import de.hftl.mize.exception.BusinessException;
+import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Vehicle;
 import de.hftl.mize.response.BaseResponse;
 import de.hftl.mize.response.VehicleResponse;
 import de.hftl.mize.system.Helper;
 
-public class VehicleHandler {
+public class VehicleHandler
+{
 	/**
 	 * Builds the response and returns a {@link VehicleResponse} within a
 	 * {@link ResponseBuilder}
 	 * 
 	 * @param vehicleUUID
-	 *            The external {@link UUID} of the vehicle
+	 *            The external {@link UUID} of the vehicle as String
 	 * @return {@link ResponseBuilder}
 	 */
 	public static ResponseBuilder getVehicle(String vehicleUUID)
@@ -36,10 +38,9 @@ public class VehicleHandler {
 			response.setVehicle(vehicle);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 
 	}
@@ -66,10 +67,9 @@ public class VehicleHandler {
 			response.setVehicles(vehicles);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 	}
 
@@ -89,13 +89,14 @@ public class VehicleHandler {
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();
 
-			UUID vehicles = vehicleDAO.insertVehicle(vehicle);
+			Integer userId = Helper.getIdOfCurrentUser();
+
+			UUID vehicles = vehicleDAO.insertVehicle(vehicle, userId);
 
 			response.setResourceId(vehicles.toString());
 
 			return Response.status(201).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException be)
 		{
 			return Helper.buildErrorResponse(be);
 		}
@@ -106,7 +107,7 @@ public class VehicleHandler {
 	 * {@link ResponseBuilder}
 	 * 
 	 * @param vehicleUUID
-	 *            The external {@link UUID} of the vehicle
+	 *            The external {@link UUID} of the vehicle as String
 	 * @param vehicle
 	 *            The {@link Vehicle} object
 	 * 
@@ -121,8 +122,7 @@ public class VehicleHandler {
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();
 
-			Boolean isUpdated = vehicleDAO.updateVehicle(
-					UUID.fromString(vehicleUUID), vehicle);
+			Boolean isUpdated = vehicleDAO.updateVehicle(vehicleUUID, vehicle);
 
 			if (!isUpdated)
 			{
@@ -133,10 +133,9 @@ public class VehicleHandler {
 			response.setResourceId(vehicleUUID);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 	}
 
@@ -145,7 +144,7 @@ public class VehicleHandler {
 	 * {@link ResponseBuilder}
 	 * 
 	 * @param vehicleUUID
-	 *            The external {@link UUID} of the vehicle
+	 *            The external {@link UUID} of the vehicle as String
 	 * @return {@link ResponseBuilder}
 	 */
 	public static ResponseBuilder deleteVehicle(String vehicleUUID)
@@ -156,8 +155,7 @@ public class VehicleHandler {
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();
 
-			Boolean isUpdated = vehicleDAO.deleteVehicle(UUID
-					.fromString(vehicleUUID));
+			Boolean isUpdated = vehicleDAO.deleteVehicle(vehicleUUID);
 
 			if (!isUpdated)
 			{
@@ -168,10 +166,9 @@ public class VehicleHandler {
 			response.setResourceId(vehicleUUID);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 	}
 }

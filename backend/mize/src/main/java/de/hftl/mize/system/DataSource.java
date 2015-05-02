@@ -7,7 +7,14 @@ import java.util.Properties;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
 
-public class DataSource {
+/**
+ * Database connection pooling
+ * 
+ * @author Tobias
+ *
+ */
+public class DataSource
+{
 
 	private static final int	CONN_POOL_SIZE	= 5;
 
@@ -17,7 +24,8 @@ public class DataSource {
 
 	private static Logger		LOGGER			= Logger.getRootLogger();
 
-	private DataSource() {
+	private DataSource()
+	{
 		Properties props = new Properties();
 		InputStream input = null;
 
@@ -39,28 +47,26 @@ public class DataSource {
 
 			LOGGER.trace("Done.");
 
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
-			ex.printStackTrace();
-		}
-		finally
+			LOGGER.error(ex.getMessage());
+		} finally
 		{
 			if (input != null)
 			{
 				try
 				{
 					input.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
-					e.printStackTrace();
+					LOGGER.error(e.getMessage());
 				}
 			}
 		}
 	}
 
-	private static class DataSourceHolder {
+	private static class DataSourceHolder  
+	{
 		private static final DataSource	INSTANCE	= new DataSource();
 	}
 

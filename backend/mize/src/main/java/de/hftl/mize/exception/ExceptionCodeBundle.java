@@ -2,21 +2,35 @@ package de.hftl.mize.exception;
 
 import java.util.ListResourceBundle;
 
-public class ExceptionCodeBundle extends ListResourceBundle {
+public class ExceptionCodeBundle extends ListResourceBundle
+{
 
 	private static final Object[][]	CONTENTS	= {
-			// BusinessException
+			// ####### BusinessExceptions
+
+			// Trip Exceptions
 			{ BusinessException.TRIP_NOT_FOUND, new Integer(404) },
+			{ BusinessException.TRIP_CREATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_UPDATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_DELETE_FAILED, new Integer(500) },
 
+			// Vehicle Exceptions
 			{ BusinessException.VEHICLE_NOT_FOUND, new Integer(404) },
+			{ BusinessException.VEHICLE_CREATE_FAILED, new Integer(500) },
 			{ BusinessException.VEHICLE_UPDATE_FAILED, new Integer(500) },
 			{ BusinessException.VEHICLE_DELETE_FAILED, new Integer(500) },
 
+			// User Exceptions
 			{ BusinessException.USER_NOT_FOUND, new Integer(404) },
 
-			{ BusinessException.MYSQL_ERROR, new Integer(500) } };
+			// System Exceptions
+			{ BusinessException.MYSQL_ERROR, new Integer(500) },
+			{ BusinessException.SYSTEM_ERROR, new Integer(500) },
+
+			// ####### ValidationExceptions
+			{ ValidationException.INVALID_UUID, new Integer(400) }
+
+												};
 
 	@Override
 	protected Object[][] getContents()

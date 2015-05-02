@@ -1,21 +1,35 @@
 package de.hftl.mize.response;
 
 import de.hftl.mize.model.Status;
+import de.hftl.mize.model.Trip;
 
-public class BaseResponse {
+/**
+ * Represents a not specified response.
+ * 
+ * This response is mostly used when an error occurs or when a resource only
+ * needs to return a resource id, e.g. of a new {@link Trip}
+ * 
+ * @author Tobias
+ *
+ */
+public class BaseResponse
+{
 
 	public Status	status;
 	public String	resourceId;
 
-	public BaseResponse() {
+	public BaseResponse()
+	{
 	}
 
-	public BaseResponse(Status status) {
+	public BaseResponse(Status status)
+	{
 		super();
 		this.status = status;
 	}
 
-	public BaseResponse(Status status, String resourceId) {
+	public BaseResponse(Status status, String resourceId)
+	{
 		super();
 		this.status = status;
 		this.resourceId = resourceId;
@@ -57,7 +71,6 @@ public class BaseResponse {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

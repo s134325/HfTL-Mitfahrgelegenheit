@@ -1,5 +1,12 @@
 package de.hftl.mize.model;
 
+
+/**
+ * Represents a location
+ * 
+ * @author Tobias
+ *
+ */
 public class Location
 {
 
@@ -10,14 +17,45 @@ public class Location
 	public Country		country;
 	public Coordinate	geoCoordinate;
 
-	public Location() {
-		// TODO Auto-generated constructor stub
+	/**
+	 * Constructor.
+	 */
+	public Location()
+	{
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param street
+	 *            String
+	 * @param streetNumber
+	 *            String
+	 * @param zipCode
+	 *            String
+	 * @param city
+	 *            String
+	 * @param country
+	 *            {@link Country}
+	 * @param geoCoordinate
+	 *            {@link Coordinate}
+	 */
+	public Location(String street, String streetNumber, String zipCode,
+			String city, Country country, Coordinate geoCoordinate)
+	{
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.zipCode = zipCode;
+		this.city = city;
+		this.country = country;
+		this.geoCoordinate = geoCoordinate;
 	}
 
 	/**
 	 * @return the street
 	 */
-	public String getStreet() {
+	public String getStreet()
+	{
 		return street;
 	}
 
@@ -25,14 +63,16 @@ public class Location
 	 * @param street
 	 *            the street to set
 	 */
-	public void setStreet(String street) {
+	public void setStreet(String street)
+	{
 		this.street = street;
 	}
 
 	/**
 	 * @return the streetNumber
 	 */
-	public String getStreetNumber() {
+	public String getStreetNumber()
+	{
 		return streetNumber;
 	}
 
@@ -40,14 +80,16 @@ public class Location
 	 * @param streetNumber
 	 *            the streetNumber to set
 	 */
-	public void setStreetNumber(String streetNumber) {
+	public void setStreetNumber(String streetNumber)
+	{
 		this.streetNumber = streetNumber;
 	}
 
 	/**
 	 * @return the zipCode
 	 */
-	public String getZipCode() {
+	public String getZipCode()
+	{
 		return zipCode;
 	}
 
@@ -55,14 +97,16 @@ public class Location
 	 * @param zipCode
 	 *            the zipCode to set
 	 */
-	public void setZipCode(String zipCode) {
+	public void setZipCode(String zipCode)
+	{
 		this.zipCode = zipCode;
 	}
 
 	/**
 	 * @return the city
 	 */
-	public String getCity() {
+	public String getCity()
+	{
 		return city;
 	}
 
@@ -70,14 +114,16 @@ public class Location
 	 * @param city
 	 *            the city to set
 	 */
-	public void setCity(String city) {
+	public void setCity(String city)
+	{
 		this.city = city;
 	}
 
 	/**
 	 * @return the country
 	 */
-	public Country getCountry() {
+	public Country getCountry()
+	{
 		return country;
 	}
 
@@ -85,14 +131,16 @@ public class Location
 	 * @param country
 	 *            the country to set
 	 */
-	public void setCountry(Country country) {
+	public void setCountry(Country country)
+	{
 		this.country = country;
 	}
 
 	/**
 	 * @return the geoCoordinate
 	 */
-	public Coordinate getGeoCoordinate() {
+	public Coordinate getGeoCoordinate()
+	{
 		return geoCoordinate;
 	}
 
@@ -100,17 +148,18 @@ public class Location
 	 * @param geoCoordinate
 	 *            the geoCoordinate to set
 	 */
-	public void setGeoCoordinate(Coordinate geoCoordinate) {
+	public void setGeoCoordinate(Coordinate geoCoordinate)
+	{
 		this.geoCoordinate = geoCoordinate;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Location [street=" + street + ", streetNumber=" + streetNumber
 				+ ", zipCode=" + zipCode + ", city=" + city + ", country="
 				+ country + ", geoCoordinate=" + geoCoordinate + "]";

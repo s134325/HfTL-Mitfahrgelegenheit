@@ -1,8 +1,6 @@
 /**
+ * This package holds all data access objects
  * 
- */
-/**
- * This package holds all Data Access Objects
  * @author Tobias
  *
  */

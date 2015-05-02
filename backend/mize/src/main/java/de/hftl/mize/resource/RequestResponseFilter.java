@@ -3,15 +3,22 @@ package de.hftl.mize.resource;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.ws.rs.container.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.google.common.base.Charsets;
+
 @Provider
 public class RequestResponseFilter implements ContainerResponseFilter,
-		ContainerRequestFilter {
+		ContainerRequestFilter
+{
 
 	private static Logger	LOGGER	= Logger.getRootLogger();
 
@@ -32,6 +39,7 @@ public class RequestResponseFilter implements ContainerResponseFilter,
 		build += "\nMethod:\t\t" + requestContext.getMethod();
 		build += "\nURI:\t\t" + requestContext.getUriInfo().getAbsolutePath();
 		build += "\nDate:\t\t" + dt;
+		build += "\nDate:\t\t" + IOUtils.toString(requestContext.getEntityStream(), Charsets.UTF_8);;
 		build += "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
 
 		LOGGER.debug(build);
@@ -49,7 +57,7 @@ public class RequestResponseFilter implements ContainerResponseFilter,
 
 		responseContext.getHeaders().add("X-Powered-By", "Kapa Eta");
 		responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
-		
+
 		String build = "\n<<<<<<<<< Response <<<<<<<<<<<<<<<<<<<<";
 		build += "\nUUID:\t\t" + uuid;
 		build += "\nDate:\t\t" + DateTime.now();

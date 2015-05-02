@@ -4,25 +4,31 @@
 package de.hftl.mize.exception;
 
 /**
+ * Container for exceptions
+ * 
  * @author tokilian
  *
  */
-public class BaseBusinessException extends Exception {
+public class BaseBusinessException extends Exception
+{
 
-	private static final long serialVersionUID = -5535658615392126824L;
+	private static final long	serialVersionUID	= -5535658615392126824L;
 
-	private final String errorCode;
+	private final String		errorCode;
 
-	public BaseBusinessException(String errorCode) {
+	public BaseBusinessException(String errorCode)
+	{
 		this(errorCode, null);
 	}
 
-	public BaseBusinessException(String errorCode, String message) {
+	public BaseBusinessException(String errorCode, String message)
+	{
 		this(errorCode, message, null);
 	}
 
 	public BaseBusinessException(String errorCode, String message,
-			final Throwable rootCause) {
+			final Throwable rootCause)
+	{
 		super(message, rootCause);
 		this.errorCode = errorCode;
 	}
@@ -30,15 +36,18 @@ public class BaseBusinessException extends Exception {
 	/**
 	 * @return the errorCode
 	 */
-	public String getErrorCode() {
+	public String getErrorCode()
+	{
 		return errorCode;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("BusinessException [errorCode=");
 		builder.append(errorCode);

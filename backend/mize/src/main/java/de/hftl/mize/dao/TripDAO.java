@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -13,9 +15,11 @@ import org.apache.log4j.Logger;
 import de.hftl.mize.dao.i.ILocationDAO;
 import de.hftl.mize.dao.i.ITripDAO;
 import de.hftl.mize.exception.BusinessException;
+import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Location;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.system.DataSource;
+import de.hftl.mize.system.Validation;
 
 /**
  * Deals with all persistence aspects of a {@link Trip}
@@ -23,7 +27,8 @@ import de.hftl.mize.system.DataSource;
  * @author tokilian
  *
  */
-public class TripDAO implements ITripDAO {
+public class TripDAO implements ITripDAO
+{
 
 	private static Logger	LOGGER	= Logger.getRootLogger();
 
@@ -49,7 +54,7 @@ public class TripDAO implements ITripDAO {
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("SELECT * FROM `trip` LIMIT 30");
+					.prepareStatement("SELECT * FROM `trip` LIMIT 30;");
 
 			resultSet = statement.executeQuery();
 
@@ -78,25 +83,25 @@ public class TripDAO implements ITripDAO {
 			}
 
 			return alTrip;
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
+			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		}
-		finally
+		} catch (BusinessException e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(e.getErrorCode());
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
-				LOGGER.error(e);
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
 
@@ -160,24 +165,20 @@ public class TripDAO implements ITripDAO {
 			}
 
 			return alTrip;
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
+			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		}
-		finally
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
+				LOGGER.fatal(e.getMessage());
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
@@ -187,9 +188,18 @@ public class TripDAO implements ITripDAO {
 	 * Get a single Trip by UUID
 	 * 
 	 * @return Trip
+	 * @throws BusinessException
+	 * @throws ValidationException
+	 * 
 	 */
-	public Trip getTrip(String uuid) throws BusinessException
+	public Trip getTrip(String tripUUID) throws BusinessException,
+			ValidationException
 	{
+		if (!Validation.isUUID(tripUUID))
+		{
+			throw new ValidationException(ValidationException.INVALID_UUID);
+		}
+
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -203,9 +213,9 @@ public class TripDAO implements ITripDAO {
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("SELECT * from trip WHERE id = ?");
+					.prepareStatement("SELECT * from trip WHERE uuid = ?;");
 
-			statement.setString(1, uuid);
+			statement.setString(1, tripUUID);
 
 			resultSet = statement.executeQuery();
 
@@ -236,24 +246,20 @@ public class TripDAO implements ITripDAO {
 			}
 
 			return trip;
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
+			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		}
-		finally
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
+				LOGGER.fatal(e.getMessage());
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
@@ -264,11 +270,18 @@ public class TripDAO implements ITripDAO {
 	 * 
 	 * @return a Boolean showing weather the update process was successful
 	 * @throws BusinessException
+	 * @throws ValidationException
 	 */
-	// TODO: What would be useful?
-	public Boolean updateTrip(UUID tripUUID, Trip trip)
-			throws BusinessException
+	// TODO: Not quite happy with this solution, location is not updated just
+	// inserted again
+	public Boolean updateTrip(String tripUUID, Trip trip)
+			throws BusinessException, ValidationException
 	{
+
+		if (!Validation.isUUID(tripUUID))
+		{
+			throw new ValidationException(ValidationException.INVALID_UUID);
+		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -279,6 +292,8 @@ public class TripDAO implements ITripDAO {
 		try
 		{
 
+			Date today = new Date();
+
 			Integer locationFromId = locationDAO.setLocation(trip.getFrom());
 			Integer locationToId = locationDAO.setLocation(trip.getTo());
 
@@ -286,42 +301,46 @@ public class TripDAO implements ITripDAO {
 
 			connection = bds.getConnection();
 
-			statement = connection.prepareStatement(" UPDATE trip " + " SET "
-					+ " WHERE uuid = ? ");
+			statement = connection
+					.prepareStatement(" UPDATE trip "
+							+ " SET from = ?, to = ?, start_time = ?, free_seats = ?, "
+							+ " description = ?, price = ?, active = ?, update_time = ? "
+							+ " WHERE uuid = ?;");
 
-			statement.setString(1, tripUUID.toString());
-			statement.setInt(2, locationFromId);
-			statement.setInt(3, locationToId);
-			statement.setString(4, trip.getStartTime());
-			statement.setInt(5, trip.getFreeSeats());
-			statement.setString(6, trip.getDescription());
-			statement.setDouble(7, trip.getPrice());
-			statement.setBoolean(8, trip.getActive());
-			statement.setString(9, null);
+			statement.setInt(1, locationFromId);
+			statement.setInt(2, locationToId);
+			statement.setString(3, trip.getStartTime());
+			statement.setInt(4, trip.getFreeSeats());
+			statement.setString(5, trip.getDescription());
+			statement.setDouble(6, trip.getPrice());
+			statement.setBoolean(7, trip.getActive());
+			statement.setTimestamp(8, new Timestamp(today.getTime()));
+			statement.setString(9, tripUUID);
 
-			statement.executeUpdate();
+			if (statement.executeUpdate() > 0)
+			{
+				return true;
+			}
+			else
+			{
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
 
-			return true;
-
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
+			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		}
-		finally
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
-				LOGGER.error(e);
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
 	}
@@ -352,9 +371,9 @@ public class TripDAO implements ITripDAO {
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("INSERT INTO trip"
-							+ "(uuid, from, to, startTime, freeSeats, description, price, active, updateTime) VALUES"
-							+ "(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO trip "
+							+ " (uuid, from, to, startTime, freeSeats, description, price, active) VALUES "
+							+ " (?, ?, ?, ?, ?, ?, ?, ?);");
 
 			statement.setString(1, tripUUID.toString());
 			statement.setInt(2, locationFromId);
@@ -364,30 +383,29 @@ public class TripDAO implements ITripDAO {
 			statement.setString(6, trip.getDescription());
 			statement.setDouble(7, trip.getPrice());
 			statement.setBoolean(8, trip.getActive());
-			statement.setString(9, null);
 
 			statement.executeUpdate();
 
 			return tripUUID;
 
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
+			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		}
-		finally
+		} catch (Exception e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.SYSTEM_ERROR);
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
+				LOGGER.fatal(e.getMessage());
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
@@ -399,9 +417,15 @@ public class TripDAO implements ITripDAO {
 	 * 
 	 * @return a Boolean showing weather the delete process was successful
 	 * @throws BusinessException
+	 * @throws ValidationException
 	 */
-	public Boolean deleteTrip(UUID tripUUID) throws BusinessException
+	public Boolean deleteTrip(String tripUUID) throws BusinessException,
+			ValidationException
 	{
+		if (!Validation.isUUID(tripUUID))
+		{
+			throw new ValidationException(ValidationException.INVALID_UUID);
+		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -415,7 +439,7 @@ public class TripDAO implements ITripDAO {
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("DELETE FROM trip WHERE uuid = ?");
+					.prepareStatement("DELETE FROM trip WHERE uuid = ?;");
 
 			statement.setString(1, tripUUID.toString());
 
@@ -423,23 +447,18 @@ public class TripDAO implements ITripDAO {
 
 			return true;
 
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
+			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		}
-		finally
+		} finally
 		{
 			try
 			{
-				if (resultSet != null)
-					resultSet.close();
-				if (statement != null)
-					statement.close();
-				if (connection != null)
-					connection.close();
-			}
-			catch (SQLException e)
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
 			{
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}

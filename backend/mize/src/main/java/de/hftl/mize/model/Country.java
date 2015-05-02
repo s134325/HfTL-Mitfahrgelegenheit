@@ -1,5 +1,12 @@
 package de.hftl.mize.model;
 
-public enum Country {
+/**
+ * Represents a country
+ * 
+ * @author Tobias
+ *
+ */
+public enum Country
+{
 	GERMANY, UNDEFINED
 }

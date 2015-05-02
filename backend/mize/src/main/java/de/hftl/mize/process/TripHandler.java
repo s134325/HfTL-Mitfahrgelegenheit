@@ -9,13 +9,15 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import de.hftl.mize.dao.TripDAO;
 import de.hftl.mize.dao.i.ITripDAO;
 import de.hftl.mize.exception.BusinessException;
+import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.response.BaseResponse;
 import de.hftl.mize.response.TripResponse;
 import de.hftl.mize.response.VehicleResponse;
 import de.hftl.mize.system.Helper;
 
-public class TripHandler {
+public class TripHandler
+{
 
 	/**
 	 * Builds the response and returns a {@link VehicleResponse} within a
@@ -39,10 +41,9 @@ public class TripHandler {
 			response.setTrip(trip);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 
 	}
@@ -82,8 +83,7 @@ public class TripHandler {
 			response.setTrips(trips);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException be)
 		{
 			return Helper.buildErrorResponse(be);
 		}
@@ -111,8 +111,7 @@ public class TripHandler {
 			response.setResourceId(uuid.toString());
 
 			return Response.status(201).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException be)
 		{
 			return Helper.buildErrorResponse(be);
 		}
@@ -137,8 +136,7 @@ public class TripHandler {
 		{
 			ITripDAO tripDAO = new TripDAO();
 
-			Boolean isUpdated = tripDAO.updateTrip(UUID.fromString(tripUUId),
-					trip);
+			Boolean isUpdated = tripDAO.updateTrip(tripUUId, trip);
 
 			if (!isUpdated)
 			{
@@ -149,10 +147,9 @@ public class TripHandler {
 			response.setResourceId(tripUUId);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 	}
 
@@ -173,7 +170,7 @@ public class TripHandler {
 		{
 			ITripDAO tripDAO = new TripDAO();
 
-			Boolean isUpdated = tripDAO.deleteTrip(UUID.fromString(tripUUId));
+			Boolean isUpdated = tripDAO.deleteTrip(tripUUId);
 
 			if (!isUpdated)
 			{
@@ -184,10 +181,9 @@ public class TripHandler {
 			response.setResourceId(tripUUId);
 
 			return Response.status(200).entity(response);
-		}
-		catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 	}
 }

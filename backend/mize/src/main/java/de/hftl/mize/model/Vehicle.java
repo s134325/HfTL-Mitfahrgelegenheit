@@ -2,17 +2,34 @@ package de.hftl.mize.model;
 
 import java.util.UUID;
 
-public class Vehicle {
+public class Vehicle
+{
 	public String	make;
 	public String	model;
 	public Integer	seats;
-	// TODO: try to hide it when delivering the JSON
 	public UUID		userId;
 
-	public Vehicle() {
+	/**
+	 * Constructor.
+	 */
+	public Vehicle()
+	{
 	}
 
-	public Vehicle(String make, String model, Integer seats, UUID userId) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param make
+	 *            String
+	 * @param model
+	 *            String
+	 * @param seats
+	 *            Integer
+	 * @param userId
+	 *            {@link UUID}
+	 */
+	public Vehicle(String make, String model, Integer seats, UUID userId)
+	{
 		super();
 		this.make = make;
 		this.model = model;
@@ -90,7 +107,6 @@ public class Vehicle {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

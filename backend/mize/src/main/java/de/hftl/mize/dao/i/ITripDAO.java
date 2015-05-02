@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import de.hftl.mize.exception.BusinessException;
+import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Trip;
 
 /**
  * @author tokilian
  *
  */
-public interface ITripDAO {
+public interface ITripDAO
+{
 
 	/**
 	 * Get all trips
@@ -45,22 +47,25 @@ public interface ITripDAO {
 	 *            The external UUID of the trip
 	 * @return {@link Trip}
 	 * @throws BusinessException
+	 * @throws ValidationException
 	 */
-	public Trip getTrip(String uuid) throws BusinessException;
+	public Trip getTrip(String uuid) throws BusinessException,
+			ValidationException;
 
 	/**
 	 * Update a trip by its external {@link UUID} and the representative
 	 * {@link Trip} JSON object
 	 * 
-	 * @param tripUUID
+	 * @param tripUUId
 	 *            The external UUID of the trip
 	 * @param trip
 	 *            The {@link Trip} object
 	 * @return {@link Boolean} whether the update was successful
 	 * @throws BusinessException
+	 * @throws ValidationException
 	 */
-	public Boolean updateTrip(UUID tripUUID, Trip trip)
-			throws BusinessException;
+	public Boolean updateTrip(String tripUUId, Trip trip)
+			throws BusinessException, ValidationException;
 
 	/**
 	 * Insert a new trip
@@ -80,6 +85,7 @@ public interface ITripDAO {
 	 *            The external UUID of the trip
 	 * @return {@link Boolean} whether the delete was successful
 	 * @throws BusinessException
+	 * @throws ValidationException 
 	 */
-	public Boolean deleteTrip(UUID tripUUID) throws BusinessException;
+	public Boolean deleteTrip(String tripUUID) throws BusinessException, ValidationException;
 }

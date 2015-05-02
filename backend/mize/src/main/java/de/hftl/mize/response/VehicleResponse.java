@@ -5,19 +5,36 @@ import java.util.ArrayList;
 import de.hftl.mize.model.Status;
 import de.hftl.mize.model.Vehicle;
 
-public class VehicleResponse {
+/**
+ * Represents a response containing of a status and a list of {@link Vehicle}s,
+ * sized >= 1
+ * 
+ * @author Tobias
+ *
+ */
+public class VehicleResponse
+{
 
 	public ArrayList<Vehicle>	vehicles	= new ArrayList<Vehicle>();
 	public Status				status;
 
-	public VehicleResponse() {
+	/**
+	 * Constructor.
+	 */
+	public VehicleResponse()
+	{
 	}
 
 	/**
+	 * Constructor.
+	 * 
 	 * @param vehicles
+	 *            {@link ArrayList} of {@link Vehicle}
 	 * @param status
+	 *            {@link Status}
 	 */
-	public VehicleResponse(ArrayList<Vehicle> vehicles, Status status) {
+	public VehicleResponse(ArrayList<Vehicle> vehicles, Status status)
+	{
 		this.vehicles = vehicles;
 		this.status = status;
 	}
