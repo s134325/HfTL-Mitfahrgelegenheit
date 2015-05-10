@@ -10,11 +10,13 @@ import de.hftl.mize.dao.TripDAO;
 import de.hftl.mize.dao.i.ITripDAO;
 import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
+import de.hftl.mize.model.Status;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.response.BaseResponse;
 import de.hftl.mize.response.TripResponse;
 import de.hftl.mize.response.VehicleResponse;
 import de.hftl.mize.system.Helper;
+import de.hftl.mize.system.Validation;
 
 public class TripHandler
 {
@@ -23,20 +25,21 @@ public class TripHandler
 	 * Builds the response and returns a {@link VehicleResponse} within a
 	 * {@link ResponseBuilder}
 	 * 
-	 * @param tripUUId
+	 * @param tripUUID
 	 *            The external {@link UUID} of the trip
 	 * @return {@link ResponseBuilder}
 	 */
-	public static ResponseBuilder getTrip(String tripUUId)
+	public static ResponseBuilder getTrip(String tripUUID)
 	{
-
 		try
 		{
+			Validation.isUUID(tripUUID);
+
 			TripResponse response = new TripResponse();
 
 			ITripDAO tripDAO = new TripDAO();
 
-			Trip trip = tripDAO.getTrip(tripUUId);
+			Trip trip = tripDAO.getTrip(tripUUID);
 
 			response.setTrip(trip);
 
@@ -104,16 +107,20 @@ public class TripHandler
 
 		try
 		{
+			Validation.isISO8601(trip.getStartTime());
+
 			ITripDAO tripDAO = new TripDAO();
 
 			UUID uuid = tripDAO.insertTrip(trip);
 
 			response.setResourceId(uuid.toString());
+			response.setStatus(new Status("CREATED",
+					"The trip was created successfully"));
 
 			return Response.status(201).entity(response);
-		} catch (BusinessException be)
+		} catch (BusinessException | ValidationException e)
 		{
-			return Helper.buildErrorResponse(be);
+			return Helper.buildErrorResponse(e);
 		}
 	}
 
@@ -121,22 +128,25 @@ public class TripHandler
 	 * Builds the response and returns a {@link VehicleResponse} within a
 	 * {@link ResponseBuilder}
 	 * 
-	 * @param tripUUId
+	 * @param tripUUID
 	 *            The external {@link UUID} of the trip
 	 * @param trip
 	 *            The {@link Trip} object
 	 * @return {@link ResponseBuilder}
 	 */
-	public static ResponseBuilder updateTrip(String tripUUId, Trip trip)
+	public static ResponseBuilder updateTrip(String tripUUID, Trip trip)
 	{
 
 		BaseResponse response = new BaseResponse();
 
 		try
 		{
+
+			Validation.isUUID(tripUUID);
+
 			ITripDAO tripDAO = new TripDAO();
 
-			Boolean isUpdated = tripDAO.updateTrip(tripUUId, trip);
+			Boolean isUpdated = tripDAO.updateTrip(tripUUID, trip);
 
 			if (!isUpdated)
 			{
@@ -144,7 +154,7 @@ public class TripHandler
 						BusinessException.TRIP_UPDATE_FAILED);
 			}
 
-			response.setResourceId(tripUUId);
+			response.setResourceId(tripUUID);
 
 			return Response.status(200).entity(response);
 		} catch (BusinessException | ValidationException e)
@@ -168,6 +178,9 @@ public class TripHandler
 
 		try
 		{
+
+			Validation.isUUID(tripUUId);
+
 			ITripDAO tripDAO = new TripDAO();
 
 			Boolean isUpdated = tripDAO.deleteTrip(tripUUId);

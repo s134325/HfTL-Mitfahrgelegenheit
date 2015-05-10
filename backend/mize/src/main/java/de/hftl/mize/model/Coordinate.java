@@ -6,6 +6,13 @@ public class Coordinate
 	public Double	longitude;
 
 	/**
+	 * 
+	 */
+	public Coordinate()
+	{
+	}
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param latitude

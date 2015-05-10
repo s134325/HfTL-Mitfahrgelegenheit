@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 public class DataSource
 {
 
-	private static final int	CONN_POOL_SIZE	= 5;
+	private static final int	CONN_POOL_SIZE	= 30;
 
 	private BasicDataSource		bds				= new BasicDataSource();
 

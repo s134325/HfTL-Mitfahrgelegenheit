@@ -16,7 +16,6 @@ import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Vehicle;
 import de.hftl.mize.system.DataSource;
 import de.hftl.mize.system.Helper;
-import de.hftl.mize.system.Validation;
 
 /**
  * 
@@ -39,10 +38,6 @@ public class VehicleDAO implements IVehicleDAO
 	public Vehicle getVehicle(String vehicleUUID) throws BusinessException,
 			ValidationException
 	{
-		if (!Validation.isUUID(vehicleUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -106,10 +101,6 @@ public class VehicleDAO implements IVehicleDAO
 	public ArrayList<Vehicle> getVehiclesByUserId(String userUUID)
 			throws BusinessException, ValidationException
 	{
-		if (!Validation.isUUID(userUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -178,10 +169,6 @@ public class VehicleDAO implements IVehicleDAO
 	public Boolean updateVehicle(String vehicleUUID, Vehicle vehicle)
 			throws BusinessException, ValidationException
 	{
-		if (!Validation.isUUID(vehicleUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -291,10 +278,6 @@ public class VehicleDAO implements IVehicleDAO
 	public Boolean deleteVehicle(String vehicleUUID) throws BusinessException,
 			ValidationException
 	{
-		if (!Validation.isUUID(vehicleUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;

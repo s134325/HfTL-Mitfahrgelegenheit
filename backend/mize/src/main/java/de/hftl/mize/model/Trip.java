@@ -2,12 +2,15 @@ package de.hftl.mize.model;
 
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Represents a trip
  * 
  * @author tokilian
  *
  */
+@XmlRootElement
 public class Trip
 {
 
@@ -27,6 +30,37 @@ public class Trip
 	 */
 	public Trip()
 	{
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param from
+	 *            {@link Location}
+	 * @param to
+	 *            {@link Location}
+	 * @param startTime
+	 *            String
+	 * @param freeSeats
+	 *            Integer
+	 * @param description
+	 *            String
+	 * @param price
+	 *            Double
+	 * @param active
+	 *            Boolean
+	 */
+	public Trip(Location from, Location to, String startTime,
+			Integer freeSeats, String description, Double price, Boolean active)
+	{
+		super();
+		this.from = from;
+		this.to = to;
+		this.startTime = startTime;
+		this.freeSeats = freeSeats;
+		this.description = description;
+		this.price = price;
+		this.active = active;
 	}
 
 	/**
@@ -247,10 +281,11 @@ public class Trip
 	@Override
 	public String toString()
 	{
-		return "Trip [uuid=" + uuid + ", from=" + from.toString() + ", to="
-				+ to.toString() + ", startTime=" + startTime + ", freeSeats="
-				+ freeSeats + ", description=" + description + ", price="
-				+ price + ", active=" + active + ", createTime=" + createTime
+		return "Trip [uuid=" + uuid + ", from=" + from + ", to=" + to
+				+ ", startTime=" + startTime + ", freeSeats=" + freeSeats
+				+ ", description=" + description + ", price=" + price
+				+ ", active=" + active + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + "]";
 	}
+
 }

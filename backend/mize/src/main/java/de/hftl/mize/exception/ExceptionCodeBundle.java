@@ -28,7 +28,8 @@ public class ExceptionCodeBundle extends ListResourceBundle
 			{ BusinessException.SYSTEM_ERROR, new Integer(500) },
 
 			// ####### ValidationExceptions
-			{ ValidationException.INVALID_UUID, new Integer(400) }
+			{ ValidationException.INVALID_UUID, new Integer(400) },
+			{ ValidationException.INVALID_ISO8601_TIME, new Integer(400) }
 
 												};
 

@@ -12,6 +12,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -28,6 +30,7 @@ import de.hftl.mize.response.TripResponse;
 @Produces({ MediaType.APPLICATION_JSON })
 public class TripResource
 {
+	private static Logger	LOGGER	= Logger.getRootLogger();
 
 	@GET
 	@Path("/{tripUUID}")
@@ -36,7 +39,7 @@ public class TripResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 404, message = "Invalid ID supplied"),
 			@ApiResponse(code = 500, message = "Other Error") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD})
 	public Response getTripByUUID(
 			@ApiParam(value = "UUID of trip that needs to be fetched",
 					required = true) @PathParam("tripUUID") String tripUUId)
@@ -52,7 +55,7 @@ public class TripResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD })
 	public Response getAllTripsWithGeoCoordinates(
 			@ApiParam(value = "Latitude of the Geo Coordinate",
 					required = false) @QueryParam("latitude") Double latitude,
@@ -99,7 +102,7 @@ public class TripResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD })
 	public Response deleteTrip(
 			@ApiParam(value = "UUID of trip that needs to be deleted",
 					required = true) @PathParam("tripUUID") String tripUUId)

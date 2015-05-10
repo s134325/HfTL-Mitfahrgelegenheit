@@ -32,11 +32,13 @@ public class ExceptionResourceBundle extends ListResourceBundle
 
 			// System Exceptions
 			{ BusinessException.MYSQL_ERROR, "Internal Server Error." },
-			{BusinessException.SYSTEM_ERROR, "Internal Server Error."},
+			{ BusinessException.SYSTEM_ERROR, "Internal Server Error." },
 
 			// ####### ValidationExceptions
 			{ ValidationException.INVALID_UUID,
-			"The UUID you provided is invalid." }
+			"The UUID you provided is invalid." },
+			{ ValidationException.INVALID_ISO8601_TIME,
+			"The time you provided is invalid." }
 
 												};
 

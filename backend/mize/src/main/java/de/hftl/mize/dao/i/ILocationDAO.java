@@ -31,4 +31,13 @@ public interface ILocationDAO
 	 * @throws BusinessException
 	 */
 	public Integer setLocation(Location location) throws BusinessException;
+
+	/**
+	 * Delete a location.
+	 * 
+	 * @param locationId
+	 *            Integer The internal ID of the location
+	 * @throws BusinessException
+	 */
+	public void deleteLocation(Integer locationId) throws BusinessException;
 }

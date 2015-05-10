@@ -14,6 +14,7 @@ import de.hftl.mize.model.Vehicle;
 import de.hftl.mize.response.BaseResponse;
 import de.hftl.mize.response.VehicleResponse;
 import de.hftl.mize.system.Helper;
+import de.hftl.mize.system.Validation;
 
 public class VehicleHandler
 {
@@ -29,6 +30,9 @@ public class VehicleHandler
 	{
 		try
 		{
+			Validation.isUUID(vehicleUUID);
+			
+
 			VehicleResponse response = new VehicleResponse();
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();
@@ -57,6 +61,9 @@ public class VehicleHandler
 	{
 		try
 		{
+			Validation.isUUID(userUUID);
+			
+
 			VehicleResponse response = new VehicleResponse();
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();
@@ -118,6 +125,9 @@ public class VehicleHandler
 	{
 		try
 		{
+			Validation.isUUID(vehicleUUID);
+			
+
 			BaseResponse response = new BaseResponse();
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();
@@ -151,6 +161,9 @@ public class VehicleHandler
 	{
 		try
 		{
+			Validation.isUUID(vehicleUUID);
+			
+
 			BaseResponse response = new BaseResponse();
 
 			IVehicleDAO vehicleDAO = new VehicleDAO();

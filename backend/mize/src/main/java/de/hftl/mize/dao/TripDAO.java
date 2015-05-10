@@ -19,7 +19,7 @@ import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Location;
 import de.hftl.mize.model.Trip;
 import de.hftl.mize.system.DataSource;
-import de.hftl.mize.system.Validation;
+import de.hftl.mize.system.Helper;
 
 /**
  * Deals with all persistence aspects of a {@link Trip}
@@ -150,16 +150,16 @@ public class TripDAO implements ITripDAO
 				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
-				trip.setUuid(UUID.fromString(resultSet.getString("id")));
+				trip.setUuid(UUID.fromString(resultSet.getString("uuid")));
 				trip.setFrom(from);
 				trip.setTo(to);
-				trip.setStartTime(resultSet.getString("startTime"));
+				trip.setStartTime(resultSet.getString("start_time"));
 				trip.setFreeSeats(resultSet.getInt("free_seats"));
 				trip.setDescription(resultSet.getString("description"));
 				trip.setPrice(resultSet.getDouble("price"));
 				trip.setActive(resultSet.getBoolean("active"));
-				trip.setUpdateTime(resultSet.getString("startTime"));
-				trip.setCreateTime(resultSet.getString("startTime"));
+				trip.setUpdateTime(resultSet.getString("update_time"));
+				trip.setCreateTime(resultSet.getString("create_time"));
 
 				alTrip.add(trip);
 			}
@@ -195,10 +195,6 @@ public class TripDAO implements ITripDAO
 	public Trip getTrip(String tripUUID) throws BusinessException,
 			ValidationException
 	{
-		if (!Validation.isUUID(tripUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -229,19 +225,20 @@ public class TripDAO implements ITripDAO
 				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
-				trip.setUuid(UUID.fromString(resultSet.getString("id")));
+				trip.setUuid(UUID.fromString(resultSet.getString("uuid")));
 				trip.setFrom(from);
 				trip.setTo(to);
-				trip.setStartTime(resultSet.getString("startTime"));
+				trip.setStartTime(resultSet.getString("start_time"));
 				trip.setFreeSeats(resultSet.getInt("free_seats"));
 				trip.setDescription(resultSet.getString("description"));
 				trip.setPrice(resultSet.getDouble("price"));
 				trip.setActive(resultSet.getBoolean("active"));
-				trip.setUpdateTime(resultSet.getString("startTime"));
-				trip.setCreateTime(resultSet.getString("startTime"));
+				trip.setUpdateTime(resultSet.getString("update_time"));
+				trip.setCreateTime(resultSet.getString("create_time"));
 			}
 			else
 			{
+				LOGGER.error("Trip with UUID: " + tripUUID + " not found");
 				throw new BusinessException(BusinessException.TRIP_NOT_FOUND);
 			}
 
@@ -277,11 +274,6 @@ public class TripDAO implements ITripDAO
 	public Boolean updateTrip(String tripUUID, Trip trip)
 			throws BusinessException, ValidationException
 	{
-
-		if (!Validation.isUUID(tripUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -353,18 +345,21 @@ public class TripDAO implements ITripDAO
 	 */
 	public UUID insertTrip(Trip trip) throws BusinessException
 	{
-
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		ILocationDAO locationDAO = new LocationDAO();
 
+		Integer locationFromId = 0;
+		Integer locationToId = 0;
+
 		try
 		{
 			UUID tripUUID = UUID.randomUUID();
-			Integer locationFromId = locationDAO.setLocation(trip.getFrom());
-			Integer locationToId = locationDAO.setLocation(trip.getTo());
+
+			locationFromId = locationDAO.setLocation(trip.getFrom());
+			locationToId = locationDAO.setLocation(trip.getTo());
 
 			BasicDataSource bds = DataSource.getInstance().getBds();
 
@@ -372,13 +367,14 @@ public class TripDAO implements ITripDAO
 
 			statement = connection
 					.prepareStatement("INSERT INTO trip "
-							+ " (uuid, from, to, startTime, freeSeats, description, price, active) VALUES "
+							+ " (uuid, location_id_from, location_id_to, start_time, free_seats, description, price, active) VALUES "
 							+ " (?, ?, ?, ?, ?, ?, ?, ?);");
 
 			statement.setString(1, tripUUID.toString());
 			statement.setInt(2, locationFromId);
 			statement.setInt(3, locationToId);
-			statement.setString(4, trip.getStartTime());
+			statement.setTimestamp(4,
+					Helper.convertISO8601ToTimestamp(trip.getStartTime()));
 			statement.setInt(5, trip.getFreeSeats());
 			statement.setString(6, trip.getDescription());
 			statement.setDouble(7, trip.getPrice());
@@ -390,12 +386,11 @@ public class TripDAO implements ITripDAO
 
 		} catch (SQLException e)
 		{
-			LOGGER.fatal(e.getMessage());
+			locationDAO.deleteLocation(locationFromId);
+			locationDAO.deleteLocation(locationToId);
+
+			LOGGER.fatal(e);
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
-		} catch (Exception e)
-		{
-			LOGGER.fatal(e.getMessage());
-			throw new BusinessException(BusinessException.SYSTEM_ERROR);
 		} finally
 		{
 			try
@@ -422,10 +417,6 @@ public class TripDAO implements ITripDAO
 	public Boolean deleteTrip(String tripUUID) throws BusinessException,
 			ValidationException
 	{
-		if (!Validation.isUUID(tripUUID))
-		{
-			throw new ValidationException(ValidationException.INVALID_UUID);
-		}
 
 		Connection connection = null;
 		PreparedStatement statement = null;

@@ -1,11 +1,14 @@
 package de.hftl.mize.system;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import de.hftl.mize.exception.BaseBusinessException;
 import de.hftl.mize.exception.BusinessException;
@@ -62,6 +65,15 @@ public class Helper
 			LOGGER.fatal(e.getMessage());
 			throw new BusinessException(BusinessException.SYSTEM_ERROR);
 		}
+	}
+
+	public static Timestamp convertISO8601ToTimestamp(String jtdate)
+	{
+		DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+
+		Timestamp t = new Timestamp(parser2.parseMillis(jtdate));
+
+		return t;
 	}
 
 	/**
