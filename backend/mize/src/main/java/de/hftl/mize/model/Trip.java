@@ -1,7 +1,5 @@
 package de.hftl.mize.model;
 
-import java.util.UUID;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Trip
 {
 
-	public UUID		uuid;
+	public String	uuid;
 	public Location	from;
 	public Location	to;
 	public String	startTime;
@@ -67,7 +65,7 @@ public class Trip
 	 * Constructor.
 	 * 
 	 * @param uuid
-	 *            {@link UUID}
+	 *            String
 	 * @param from
 	 *            {@link Location}
 	 * @param to
@@ -87,7 +85,7 @@ public class Trip
 	 * @param updateTime
 	 *            String
 	 */
-	public Trip(UUID uuid, Location from, Location to, String startTime,
+	public Trip(String uuid, Location from, Location to, String startTime,
 			Integer freeSeats, String description, Double price,
 			Boolean active, String createTime, String updateTime)
 	{
@@ -107,7 +105,7 @@ public class Trip
 	/**
 	 * @return the uuid
 	 */
-	public UUID getUuid()
+	public String getUuid()
 	{
 		return uuid;
 	}
@@ -116,7 +114,7 @@ public class Trip
 	 * @param uuid
 	 *            the uuid to set
 	 */
-	public void setUuid(UUID uuid)
+	public void setUuid(String uuid)
 	{
 		this.uuid = uuid;
 	}

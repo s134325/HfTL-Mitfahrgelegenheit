@@ -29,6 +29,17 @@ public interface IVehicleDAO
 			ValidationException;
 
 	/**
+	 * get the number of vehicle stored in the database for a single user.
+	 * 
+	 * @param userUUID
+	 *            The external UUID of the user
+	 * @return
+	 * @throws BusinessException
+	 */
+	public Integer getVehicleCountByUserId(String userUUID)
+			throws BusinessException;
+
+	/**
 	 * Get an {@link ArrayList} of {@link Vehicle} by the external {@link UUID}
 	 * of an user
 	 * 
@@ -66,9 +77,9 @@ public interface IVehicleDAO
 	 * @return The {@link UUID} of the new vehicle when the insert was
 	 *         successful, else NULL
 	 * @throws BusinessException
+	 * @throws ValidationException 
 	 */
-	public UUID insertVehicle(Vehicle vehicle, Integer userId)
-			throws BusinessException;
+	public UUID insertVehicle(Vehicle vehicle) throws BusinessException, ValidationException;
 
 	/**
 	 * Deletes a vehicle by its external {@link UUID}

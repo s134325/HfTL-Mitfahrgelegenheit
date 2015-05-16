@@ -1,13 +1,12 @@
 package de.hftl.mize.model;
 
-import java.util.UUID;
-
 public class Vehicle
 {
 	public String	make;
 	public String	model;
 	public Integer	seats;
-	public UUID		userId;
+	public String	vehicleId;
+	public String	userId;
 
 	/**
 	 * Constructor.
@@ -26,14 +25,16 @@ public class Vehicle
 	 * @param seats
 	 *            Integer
 	 * @param userId
-	 *            {@link UUID}
+	 *            String
 	 */
-	public Vehicle(String make, String model, Integer seats, UUID userId)
+	public Vehicle(String make, String model, Integer seats, String vehicleId,
+			String userId)
 	{
 		super();
 		this.make = make;
 		this.model = model;
 		this.seats = seats;
+		this.vehicleId = vehicleId;
 		this.userId = userId;
 	}
 
@@ -91,7 +92,7 @@ public class Vehicle
 	/**
 	 * @return the userId
 	 */
-	public UUID getUserId()
+	public String getUserId()
 	{
 		return userId;
 	}
@@ -100,9 +101,26 @@ public class Vehicle
 	 * @param userId
 	 *            the userId to set
 	 */
-	public void setUserId(UUID userId)
+	public void setUserId(String userId)
 	{
 		this.userId = userId;
+	}
+
+	/**
+	 * @return the vehicleId
+	 */
+	public String getVehicleId()
+	{
+		return vehicleId;
+	}
+
+	/**
+	 * @param vehicleId
+	 *            the vehicleId to set
+	 */
+	public void setVehicleId(String vehicleId)
+	{
+		this.vehicleId = vehicleId;
 	}
 
 	/*

@@ -36,6 +36,7 @@ public class RequestResponseFilter implements ContainerResponseFilter,
 			String build = "\n>>>>>>>>> Request >>>>>>>>>>>>>>>>>>>>>>";
 			build += "\nUUID:\t\t" + uuid;
 			build += "\nMethod:\t\t" + requestContext.getMethod();
+			build += "\nMediaType:\t" + requestContext.getMediaType();
 			build += "\nURI:\t\t"
 					+ requestContext.getUriInfo().getAbsolutePath();
 			build += "\nDate:\t\t" + dt;

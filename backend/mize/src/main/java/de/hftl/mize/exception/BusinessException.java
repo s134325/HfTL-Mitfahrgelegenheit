@@ -23,6 +23,7 @@ public class BusinessException extends BaseBusinessException
 	public static final String	VEHICLE_CREATE_FAILED	= "VEHICLE.CREATE.FAILED";
 	public static final String	VEHICLE_UPDATE_FAILED	= "VEHICLE.UPDATE.FAILED";
 	public static final String	VEHICLE_DELETE_FAILED	= "VEHICLE.DELETE.FAILED";
+	public static final String	VEHICLE_LITIM_EXCEEDED	= "VEHICLE.LITIM.EXCEEDED";
 
 	public static final String	LOCATION_NOT_FOUND		= "LOCATION.NOT.FOUND";
 	public static final String	LOCATION_CREATE_FAILED	= "LOCATION.CREATE.FAILED";
@@ -33,6 +34,7 @@ public class BusinessException extends BaseBusinessException
 
 	public static final String	MYSQL_ERROR				= "MYSQL.ERROR";
 	public static final String	SYSTEM_ERROR			= "SYSTEM.ERROR";
+
 	
 
 	public BusinessException(String errorCode)

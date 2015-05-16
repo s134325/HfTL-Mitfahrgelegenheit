@@ -183,9 +183,9 @@ public class TripHandler
 
 			ITripDAO tripDAO = new TripDAO();
 
-			Boolean isUpdated = tripDAO.deleteTrip(tripUUId);
+			Boolean isDeleted = tripDAO.deleteTrip(tripUUId);
 
-			if (!isUpdated)
+			if (!isDeleted)
 			{
 				throw new BusinessException(
 						BusinessException.TRIP_DELETE_FAILED);

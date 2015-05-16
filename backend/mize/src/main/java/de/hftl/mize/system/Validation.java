@@ -31,6 +31,7 @@ public class Validation
 	{
 		try
 		{
+			LOGGER.debug("Validate UUID: " + possibleUUID);
 			UUID.fromString(possibleUUID);
 		} catch (Exception ex)
 		{
@@ -39,11 +40,13 @@ public class Validation
 		}
 	}
 
-	public static void isISO8601(String jtdate) throws ValidationException
+	public static void isISO8601(String date) throws ValidationException
 	{
+		LOGGER.debug("Validate ISO8601: " + date);
+
 		String regEx = "^([\\+-]?\\d{4}(?!\\d{2}\\b))((-?)((0[1-9]|1[0-2])(\\3([12]\\d|0[1-9]|3[01]))?|W([0-4]\\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\\d|[12]\\d{2}|3([0-5]\\d|6[1-6])))([T\\s]((([01]\\d|2[0-3])((:?)[0-5]\\d)?|24\\\\:?00)([\\.,]\\d+(?!:))?)?(\\17[0-5]\\d([\\.,]\\d+)?)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?)?)?$";
 
-		if (jtdate.matches(regEx) == false)
+		if (date.matches(regEx) == false)
 		{
 			LOGGER.error("ISO8601 validation failed");
 			throw new ValidationException(

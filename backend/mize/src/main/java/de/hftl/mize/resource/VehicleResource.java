@@ -33,7 +33,7 @@ public class VehicleResource
 	@GET
 	@Path("/id/{vehicleUUID}")
 	@ApiOperation(
-			value = "Find vehicle by UUID",
+			value = "Find a vehicle by UUID",
 			notes = "Returns a vehicle by UUID if the user is allowed to retrieve the information",
 			response = VehicleResponse.class)
 	@ApiResponses(
@@ -43,7 +43,7 @@ public class VehicleResource
 					@ApiResponse(code = 404,
 							message = BusinessException.TRIP_NOT_FOUND),
 					@ApiResponse(code = 500, message = "Other Error") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD })
 	public Response getVehicleById(@ApiParam(
 			value = "ID of the vehicle that needs to be fetched",
 			required = true) @PathParam("vehicleUUID") String vehicleUUID)
@@ -60,7 +60,7 @@ public class VehicleResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 404, message = "Invalid ID supplied"),
 			@ApiResponse(code = 500, message = "Other Error") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD })
 	public Response getVehiclesByUserId(
 			@ApiParam(value = "ID of the user that needs to be fetched",
 					required = true) @PathParam("userUUID") String userUUID)
@@ -104,7 +104,7 @@ public class VehicleResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD })
 	public Response deleteVehicle(
 			@ApiParam(value = "UUID of vehicle that needs to be deleted",
 					required = true) @PathParam("vehicleUUID") String vehicleUUID)

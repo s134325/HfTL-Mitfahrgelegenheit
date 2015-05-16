@@ -19,6 +19,7 @@ public class ExceptionCodeBundle extends ListResourceBundle
 			{ BusinessException.VEHICLE_CREATE_FAILED, new Integer(500) },
 			{ BusinessException.VEHICLE_UPDATE_FAILED, new Integer(500) },
 			{ BusinessException.VEHICLE_DELETE_FAILED, new Integer(500) },
+			{ BusinessException.VEHICLE_LITIM_EXCEEDED, new Integer(409) },
 
 			// User Exceptions
 			{ BusinessException.USER_NOT_FOUND, new Integer(404) },

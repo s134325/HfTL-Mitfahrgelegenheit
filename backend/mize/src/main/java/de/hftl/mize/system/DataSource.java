@@ -36,7 +36,6 @@ public class DataSource
 			input = DataSource.class.getClassLoader().getResourceAsStream(
 					properties);
 
-			// load a properties file
 			props.load(input);
 
 			bds.setDriverClassName(props.getProperty("DB_DRIVER_CLASS"));
@@ -65,7 +64,7 @@ public class DataSource
 		}
 	}
 
-	private static class DataSourceHolder  
+	private static class DataSourceHolder
 	{
 		private static final DataSource	INSTANCE	= new DataSource();
 	}

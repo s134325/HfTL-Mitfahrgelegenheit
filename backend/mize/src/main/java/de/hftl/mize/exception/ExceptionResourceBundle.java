@@ -26,6 +26,8 @@ public class ExceptionResourceBundle extends ListResourceBundle
 			{ BusinessException.VEHICLE_CREATE_FAILED, "Vehicle create failed." },
 			{ BusinessException.VEHICLE_UPDATE_FAILED, "Vehicle update failed." },
 			{ BusinessException.VEHICLE_DELETE_FAILED, "Vehicle delete failed." },
+			{ BusinessException.VEHICLE_LITIM_EXCEEDED,
+			"Vehicle limit exceeded." },
 
 			// User Exceptions
 			{ BusinessException.USER_NOT_FOUND, "User does not exist." },

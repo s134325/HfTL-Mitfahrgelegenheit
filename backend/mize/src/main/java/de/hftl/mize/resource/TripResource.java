@@ -39,7 +39,7 @@ public class TripResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 404, message = "Invalid ID supplied"),
 			@ApiResponse(code = 500, message = "Other Error") })
-	@Consumes({ MediaType.WILDCARD})
+	@Consumes({ MediaType.WILDCARD })
 	public Response getTripByUUID(
 			@ApiParam(value = "UUID of trip that needs to be fetched",
 					required = true) @PathParam("tripUUID") String tripUUId)

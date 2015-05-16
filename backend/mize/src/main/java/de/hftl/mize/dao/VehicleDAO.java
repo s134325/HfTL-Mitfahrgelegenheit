@@ -15,7 +15,6 @@ import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Vehicle;
 import de.hftl.mize.system.DataSource;
-import de.hftl.mize.system.Helper;
 
 /**
  * 
@@ -49,8 +48,9 @@ public class VehicleDAO implements IVehicleDAO
 
 			connection = bds.getConnection();
 
-			statement = connection
-					.prepareStatement("SELECT * FROM `vehicle` WHERE uuid = ?;");
+			statement = connection.prepareStatement("SELECT v.*, u.uuid, u.id "
+					+ " FROM `vehicle` v, `user` u "
+					+ " WHERE v.uuid = ? AND u.id = v.user_id;");
 
 			statement.setString(1, vehicleUUID);
 
@@ -63,8 +63,8 @@ public class VehicleDAO implements IVehicleDAO
 				vehicle.setMake(resultSet.getString("v.make"));
 				vehicle.setModel(resultSet.getString("v.model"));
 				vehicle.setSeats(resultSet.getInt("v.seats"));
-				vehicle.setUserId(Helper.stringToUUID(resultSet
-						.getString("u.uuid")));
+				vehicle.setVehicleId(resultSet.getString("v.uuid"));
+				vehicle.setUserId(resultSet.getString("u.uuid"));
 			}
 			else
 			{
@@ -112,8 +112,9 @@ public class VehicleDAO implements IVehicleDAO
 
 			connection = bds.getConnection();
 
-			statement = connection
-					.prepareStatement("SELECT v.*, u.uuid, u.id FROM `vehicle` v, `user` u WHERE u.uuid = ? AND u.id = v.user_id;");
+			statement = connection.prepareStatement("SELECT v.*, u.uuid, u.id "
+					+ " FROM `vehicle` v, `user` u "
+					+ " WHERE u.uuid = ? AND u.id = v.user_id;");
 
 			statement.setString(1, userUUID);
 
@@ -128,8 +129,8 @@ public class VehicleDAO implements IVehicleDAO
 				vehicle.setMake(resultSet.getString("v.make"));
 				vehicle.setModel(resultSet.getString("v.model"));
 				vehicle.setSeats(resultSet.getInt("v.seats"));
-				vehicle.setUserId(Helper.stringToUUID(resultSet
-						.getString("u.uuid")));
+				vehicle.setVehicleId(resultSet.getString("v.uuid"));
+				vehicle.setUserId(resultSet.getString("u.uuid"));
 
 				vehicles.add(vehicle);
 			}
@@ -189,14 +190,7 @@ public class VehicleDAO implements IVehicleDAO
 			statement.setInt(3, vehicle.getSeats());
 			statement.setString(4, vehicleUUID);
 
-			if (statement.executeUpdate() > 0)
-			{
-				return true;
-			}
-			else
-			{
-				throw new BusinessException(BusinessException.MYSQL_ERROR);
-			}
+			return (statement.executeUpdate() >= 1);
 
 		} catch (SQLException e)
 		{
@@ -219,14 +213,24 @@ public class VehicleDAO implements IVehicleDAO
 
 	/**
 	 * Insert a new vehicle
+	 * 
+	 * @throws ValidationException
 	 */
-	public UUID insertVehicle(Vehicle vehicle, Integer userId)
-			throws BusinessException
+	public UUID insertVehicle(Vehicle vehicle) throws BusinessException
 	{
 
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
+
+		// TODO: Move this to a property file
+		if (getVehicleCountByUserId(vehicle.userId) > 4)
+		{
+			LOGGER.warn("Vehicle limit exceeded, aborting the process for user with the id: "
+					+ vehicle.userId);
+			throw new BusinessException(
+					BusinessException.VEHICLE_LITIM_EXCEEDED);
+		}
 
 		try
 		{
@@ -238,13 +242,13 @@ public class VehicleDAO implements IVehicleDAO
 
 			statement = connection.prepareStatement("INSERT INTO `vehicle` "
 					+ " (uuid, make, model, seats, user_id) VALUES "
-					+ " (?, ?, ?, ?, ?);");
+					+ " (?, ?, ?, ?, (SELECT id FROM `user` WHERE uuid = ?));");
 
 			statement.setString(1, vehicleUUID.toString());
 			statement.setString(2, vehicle.getMake());
 			statement.setString(3, vehicle.getModel());
 			statement.setInt(4, vehicle.getSeats());
-			statement.setInt(5, userId);
+			statement.setString(5, vehicle.getUserId());
 
 			statement.executeUpdate();
 
@@ -295,9 +299,7 @@ public class VehicleDAO implements IVehicleDAO
 
 			statement.setString(1, vehicleUUID);
 
-			statement.executeUpdate();
-
-			return true;
+			return (statement.executeUpdate() >= 1);
 
 		} catch (SQLException e)
 		{
@@ -312,6 +314,57 @@ public class VehicleDAO implements IVehicleDAO
 				if (connection != null) connection.close();
 			} catch (SQLException e)
 			{
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
+		}
+	}
+
+	@Override
+	public Integer getVehicleCountByUserId(String userUUID)
+			throws BusinessException
+	{
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		try
+		{
+			BasicDataSource bds = DataSource.getInstance().getBds();
+
+			connection = bds.getConnection();
+
+			statement = connection.prepareStatement("SELECT COUNT(*) AS count"
+					+ " FROM `vehicle` v, `user` u "
+					+ " WHERE u.uuid = ? AND u.id = v.user_id;");
+
+			statement.setString(1, userUUID);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next())
+			{
+				return resultSet.getInt("count");
+			}
+			else
+			{
+				return 0;
+			}
+
+		} catch (SQLException e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
+		{
+			try
+			{
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e)
+			{
+				LOGGER.fatal(e.getMessage());
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}

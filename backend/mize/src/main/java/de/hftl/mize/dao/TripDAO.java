@@ -68,7 +68,7 @@ public class TripDAO implements ITripDAO
 				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
-				trip.setUuid(UUID.fromString(resultSet.getString("id")));
+				trip.setUuid(resultSet.getString("id"));
 				trip.setFrom(from);
 				trip.setTo(to);
 				trip.setStartTime(resultSet.getString("startTime"));
@@ -150,7 +150,7 @@ public class TripDAO implements ITripDAO
 				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
-				trip.setUuid(UUID.fromString(resultSet.getString("uuid")));
+				trip.setUuid(resultSet.getString("uuid"));
 				trip.setFrom(from);
 				trip.setTo(to);
 				trip.setStartTime(resultSet.getString("start_time"));
@@ -225,7 +225,7 @@ public class TripDAO implements ITripDAO
 				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
-				trip.setUuid(UUID.fromString(resultSet.getString("uuid")));
+				trip.setUuid(resultSet.getString("uuid"));
 				trip.setFrom(from);
 				trip.setTo(to);
 				trip.setStartTime(resultSet.getString("start_time"));
