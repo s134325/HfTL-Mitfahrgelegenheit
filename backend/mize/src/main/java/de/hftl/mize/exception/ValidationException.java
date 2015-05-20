@@ -12,6 +12,7 @@ public class ValidationException extends BaseBusinessException
 
 	public static final String	INVALID_UUID			= "INVALID.UUID";
 	public static final String	INVALID_ISO8601_TIME	= "INVALID.ISO8601.TIME";
+	public static final String	INVALID_TRIP			= "INVALID.TRIP";
 
 	public ValidationException(String errorCode)
 	{

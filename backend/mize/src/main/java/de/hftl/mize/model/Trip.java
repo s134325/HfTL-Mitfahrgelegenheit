@@ -24,7 +24,7 @@ public class Trip
 	public String	updateTime;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public Trip()
 	{
@@ -274,6 +274,7 @@ public class Trip
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

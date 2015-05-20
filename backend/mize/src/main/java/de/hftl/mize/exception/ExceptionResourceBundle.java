@@ -40,7 +40,9 @@ public class ExceptionResourceBundle extends ListResourceBundle
 			{ ValidationException.INVALID_UUID,
 			"The UUID you provided is invalid." },
 			{ ValidationException.INVALID_ISO8601_TIME,
-			"The time you provided is invalid." }
+			"The time you provided is invalid." },
+			{ ValidationException.INVALID_TRIP,
+			"The trip you provided is invalid." }
 
 												};
 

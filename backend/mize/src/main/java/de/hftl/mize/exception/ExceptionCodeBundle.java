@@ -30,7 +30,8 @@ public class ExceptionCodeBundle extends ListResourceBundle
 
 			// ####### ValidationExceptions
 			{ ValidationException.INVALID_UUID, new Integer(400) },
-			{ ValidationException.INVALID_ISO8601_TIME, new Integer(400) }
+			{ ValidationException.INVALID_ISO8601_TIME, new Integer(400) },
+			{ ValidationException.INVALID_TRIP, new Integer(400) }
 
 												};
 

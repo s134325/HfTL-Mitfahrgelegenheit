@@ -7,7 +7,7 @@ The goal of MiZe is to help students which are currently enrolled in the HfTL to
 ## Current Versions
 
 ### API
-0.1.0
+0.9.0
 
 ### Frontend
 coming soon ;)

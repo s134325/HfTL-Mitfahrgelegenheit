@@ -77,8 +77,7 @@ public class TripHandler
 			if (latitude == null || longitude == null || radius == null)
 			{
 				trips = tripDAO.getTrips();
-			}
-			else
+			} else
 			{
 				trips = tripDAO.getTrips(latitude, longitude, radius);
 			}
@@ -107,6 +106,7 @@ public class TripHandler
 
 		try
 		{
+			Validation.isValidTripObject(trip);
 			Validation.isISO8601(trip.getStartTime());
 
 			ITripDAO tripDAO = new TripDAO();
@@ -141,7 +141,7 @@ public class TripHandler
 
 		try
 		{
-
+			Validation.isValidTripObject(trip);
 			Validation.isUUID(tripUUID);
 
 			ITripDAO tripDAO = new TripDAO();
