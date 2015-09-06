@@ -9,8 +9,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.log4j.Logger;
 
@@ -40,11 +43,11 @@ public class TripResource
 			@ApiResponse(code = 404, message = "Invalid ID supplied"),
 			@ApiResponse(code = 500, message = "Other Error") })
 	@Consumes({ MediaType.WILDCARD })
-	public Response getTripByUUID(
+	public Response getTripByUUID(@Context HttpHeaders headers,
 			@ApiParam(value = "UUID of trip that needs to be fetched",
 					required = true) @PathParam("tripUUID") String tripUUId)
 	{
-		return TripHandler.getTrip(tripUUId).build();
+		return TripHandler.getTrip(headers, tripUUId).build();
 	}
 
 	@GET
@@ -75,6 +78,7 @@ public class TripResource
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
 	@Consumes({ MediaType.APPLICATION_JSON })
+	@XmlTransient
 	public Response createTrip(Trip trip)
 	{
 		return TripHandler.insertTrip(trip).build();

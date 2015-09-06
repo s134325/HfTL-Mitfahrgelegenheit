@@ -1,15 +1,20 @@
 package de.hftl.mize.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Represents a status
  * 
  * @author Tobias
  *
  */
+@XmlRootElement
 public class Status
 {
-	public String	code;
-	public String	message;
+	@XmlAttribute public String	code;
+	@XmlAttribute public String	message;
 
 	/**
 	 * Constructor.
@@ -36,6 +41,7 @@ public class Status
 	/**
 	 * @return the code
 	 */
+	@XmlTransient
 	public String getCode()
 	{
 		return code;
@@ -45,6 +51,7 @@ public class Status
 	 * @param code
 	 *            the code to set
 	 */
+	@XmlTransient
 	public void setCode(String code)
 	{
 		this.code = code;

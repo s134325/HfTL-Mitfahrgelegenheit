@@ -23,6 +23,9 @@ public class ExceptionCodeBundle extends ListResourceBundle
 
 			// User Exceptions
 			{ BusinessException.USER_NOT_FOUND, new Integer(404) },
+			{ BusinessException.USER_SESSION_INVALID, new Integer(401) },
+			{ BusinessException.USER_INSERT_FAILED, new Integer(500) },
+			{ BusinessException.USER_LOGIN_FAILED, new Integer(400) },
 
 			// System Exceptions
 			{ BusinessException.MYSQL_ERROR, new Integer(500) },

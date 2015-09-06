@@ -5,10 +5,14 @@ package de.hftl.mize.system;
 
 import java.util.UUID;
 
+import javax.ws.rs.core.HttpHeaders;
+
 import org.apache.log4j.Logger;
 
+import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Trip;
+import de.hftl.mize.model.User;
 
 /**
  * This class handles all cases of validation, especially user input
@@ -86,5 +90,33 @@ public class Validation
 			LOGGER.error("Trip validation failed.");
 			throw new ValidationException(ValidationException.INVALID_TRIP);
 		}
+	}
+
+	public static void isLoggedIn(HttpHeaders headers) throws BusinessException
+	{
+		try
+		{
+			String possibleUUID = headers.getRequestHeader("x-uuid").get(0);
+			LOGGER.debug("Validate UUID for login: " + possibleUUID);
+			UUID.fromString(possibleUUID);
+		} catch (Exception ex)
+		{
+			LOGGER.error("Login failed because UUID validation failed");
+			throw new BusinessException(BusinessException.USER_NOT_FOUND);
+		}
+	}
+
+	public static void isValidUserObject(User user) throws ValidationException
+	{
+		LOGGER.debug("Validate user: " + user.toString());
+
+		if (user.getFirstName() == null || user.getLastName() == null
+				|| user.getMail() == null || user.getPassword() == null
+				|| user.getUsername() == null || user.getGender() == null)
+		{
+			LOGGER.error("User validation failed.");
+			throw new ValidationException(ValidationException.INVALID_USER);
+		}
+		
 	}
 }

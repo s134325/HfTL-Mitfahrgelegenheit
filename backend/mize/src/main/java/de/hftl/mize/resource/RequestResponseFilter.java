@@ -64,6 +64,8 @@ public class RequestResponseFilter implements ContainerResponseFilter,
 			responseContext.getHeaders().add("X-Powered-By", "Kapa Eta");
 			responseContext.getHeaders()
 					.add("Access-Control-Allow-Origin", "*");
+			responseContext.getHeaders().add("Access-Control-Request-Method",
+					"PUT, POST, DELETE, GET, OPTIONS");
 			responseContext.getHeaders().add("Access-Control-Allow-Headers",
 					"Origin, X-Requested-With, Content-Type, Accept");
 

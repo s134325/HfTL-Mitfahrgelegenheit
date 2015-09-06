@@ -31,6 +31,9 @@ public class ExceptionResourceBundle extends ListResourceBundle
 
 			// User Exceptions
 			{ BusinessException.USER_NOT_FOUND, "User does not exist." },
+			{ BusinessException.USER_SESSION_INVALID, "No valid session." },
+			{ BusinessException.USER_INSERT_FAILED, "User not created." },
+			{ BusinessException.USER_LOGIN_FAILED, "Login failed." },
 
 			// System Exceptions
 			{ BusinessException.MYSQL_ERROR, "Internal Server Error." },

@@ -1,5 +1,6 @@
 package de.hftl.mize.model;
 
+
 public class Coordinate
 {
 	public Double	latitude;
@@ -30,6 +31,7 @@ public class Coordinate
 	/**
 	 * @return the latitude
 	 */
+
 	public Double getLatitude()
 	{
 		return latitude;
@@ -39,6 +41,7 @@ public class Coordinate
 	 * @param latitude
 	 *            the latitude to set
 	 */
+
 	public void setLatitude(Double latitude)
 	{
 		this.latitude = latitude;
@@ -47,6 +50,7 @@ public class Coordinate
 	/**
 	 * @return the longitude
 	 */
+
 	public Double getLongitude()
 	{
 		return longitude;
@@ -56,6 +60,7 @@ public class Coordinate
 	 * @param longitude
 	 *            the longitude to set
 	 */
+
 	public void setLongitude(Double longitude)
 	{
 		this.longitude = longitude;

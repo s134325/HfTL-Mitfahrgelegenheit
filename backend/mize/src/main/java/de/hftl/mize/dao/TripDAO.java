@@ -131,7 +131,7 @@ public class TripDAO implements ITripDAO
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("SELECT `id`, ( 6373 * acos( cos( radians( ? ) ) * cos( radians( `latitude` ) ) * cos( radians( `longitude` ) - radians( ? ) ) + sin(radians(?)) * sin(radians(`latitude`)) ) ) `distance `FROM `location` HAVING  `distance` < ? ORDER BY `distance` LIMIT 25");
+					.prepareStatement("SELECT `id`, ( 6373 * acos( cos( radians( ? ) ) * cos( radians( `latitude` ) ) * cos( radians( `longitude` ) - radians( ? ) ) + sin(radians(?)) * sin(radians(`latitude`)) ) ) AS `distance` FROM `location` HAVING  `distance` < ? ORDER BY `distance` LIMIT 25");
 
 			statement.setDouble(1, lat);
 			statement.setDouble(2, lon);

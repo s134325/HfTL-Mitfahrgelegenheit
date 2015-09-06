@@ -3,6 +3,7 @@ package de.hftl.mize.process;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
@@ -29,10 +30,11 @@ public class TripHandler
 	 *            The external {@link UUID} of the trip
 	 * @return {@link ResponseBuilder}
 	 */
-	public static ResponseBuilder getTrip(String tripUUID)
+	public static ResponseBuilder getTrip(HttpHeaders headers, String tripUUID)
 	{
 		try
 		{
+			Validation.isLoggedIn(headers);
 			Validation.isUUID(tripUUID);
 
 			TripResponse response = new TripResponse();
@@ -155,6 +157,8 @@ public class TripHandler
 			}
 
 			response.setResourceId(tripUUID);
+			response.setStatus(new Status("UPDATED",
+					"The trip was updated successfully"));
 
 			return Response.status(200).entity(response);
 		} catch (BusinessException | ValidationException e)
@@ -192,6 +196,8 @@ public class TripHandler
 			}
 
 			response.setResourceId(tripUUId);
+			response.setStatus(new Status("DELETE",
+					"The trip was delete successfully"));
 
 			return Response.status(200).entity(response);
 		} catch (BusinessException | ValidationException e)

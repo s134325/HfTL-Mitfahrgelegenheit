@@ -31,11 +31,12 @@ public class BusinessException extends BaseBusinessException
 	public static final String	LOCATION_DELETE_FAILED	= "LOCATION.DELETE.FAILED";
 
 	public static final String	USER_NOT_FOUND			= "USER.NOT.FOUND";
+	public static final String	USER_SESSION_INVALID	= "USER.SESSION.INVALID";
+	public static final String	USER_INSERT_FAILED		= "USER.INSERT.FAILED";
+	public static final String	USER_LOGIN_FAILED		= "USER.LOGIN.FAILED";
 
 	public static final String	MYSQL_ERROR				= "MYSQL.ERROR";
 	public static final String	SYSTEM_ERROR			= "SYSTEM.ERROR";
-
-	
 
 	public BusinessException(String errorCode)
 	{
