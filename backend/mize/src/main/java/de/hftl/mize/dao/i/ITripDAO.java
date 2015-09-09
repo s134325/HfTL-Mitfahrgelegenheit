@@ -76,7 +76,7 @@ public interface ITripDAO
 	 *         else NULL
 	 * @throws BusinessException
 	 */
-	public UUID insertTrip(Trip trip) throws BusinessException;
+	public UUID insertTrip(String userUUID, Trip trip) throws BusinessException;
 
 	/**
 	 * Deletes a trip by its external {@link UUID}
@@ -85,7 +85,14 @@ public interface ITripDAO
 	 *            The external UUID of the trip
 	 * @return {@link Boolean} whether the delete was successful
 	 * @throws BusinessException
-	 * @throws ValidationException 
+	 * @throws ValidationException
 	 */
-	public Boolean deleteTrip(String tripUUID) throws BusinessException, ValidationException;
+	public Boolean deleteTrip(String tripUUID) throws BusinessException,
+			ValidationException;
+
+	public Boolean bookTrip(String userUUID, String tripUUID)
+			throws BusinessException;
+
+	public Boolean unbookTrip(String userUUID, String tripUUID)
+			throws BusinessException;
 }

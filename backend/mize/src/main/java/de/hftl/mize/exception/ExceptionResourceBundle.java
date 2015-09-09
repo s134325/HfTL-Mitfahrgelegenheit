@@ -20,6 +20,8 @@ public class ExceptionResourceBundle extends ListResourceBundle
 			{ BusinessException.TRIP_CREATE_FAILED, "Trip create failed." },
 			{ BusinessException.TRIP_UPDATE_FAILED, "Trip update failed." },
 			{ BusinessException.TRIP_DELETE_FAILED, "Trip delete failed." },
+			{ BusinessException.TRIP_BOOK_FAILED, "Trip book failed." },
+			{ BusinessException.TRIP_UNBOOK_FAILED, "Trip unbook failed." },
 
 			// Vehicle Exceptions
 			{ BusinessException.VEHICLE_NOT_FOUND, "Vehicle does not exist." },

@@ -1,5 +1,7 @@
 package de.hftl.mize.model;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -12,16 +14,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Trip
 {
 
-	public String	uuid;
-	public Location	from;
-	public Location	to;
-	public String	startTime;
-	public Integer	freeSeats;
-	public String	description;
-	public Double	price;
-	public Boolean	active;
-	public String	createTime;
-	public String	updateTime;
+	public String			uuid;
+	public Location			from;
+	public Location			to;
+	public String			startTime;
+	public Integer			freeSeats;
+	public String			description;
+	public Double			price;
+	public Boolean			active;
+	public ArrayList<User>	participants;
+	public String			createTime;
+	public String			updateTime;
 
 	/**
 	 * Constructor.
@@ -254,6 +257,21 @@ public class Trip
 		this.active = active;
 	}
 
+	public ArrayList<User> getParticipants()
+	{
+		return participants;
+	}
+
+	public void setParticipants(ArrayList<User> participants)
+	{
+		this.participants = participants;
+	}
+
+	public void setParticipant(User participant)
+	{
+		this.participants.add(participant);
+	}
+
 	/**
 	 * @return the createTime
 	 */
@@ -294,6 +312,7 @@ public class Trip
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

@@ -15,8 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.log4j.Logger;
-
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -33,84 +31,119 @@ import de.hftl.mize.response.TripResponse;
 @Produces({ MediaType.APPLICATION_JSON })
 public class TripResource
 {
-	private static Logger	LOGGER	= Logger.getRootLogger();
 
 	@GET
 	@Path("/{tripUUID}")
-	@ApiOperation(value = "Find trip by UUID", notes = "Returns a trip",
-			response = TripResponse.class)
+	@ApiOperation(value = "Find trip by UUID", notes = "Returns a trip", response = TripResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 404, message = "Invalid ID supplied"),
 			@ApiResponse(code = 500, message = "Other Error") })
 	@Consumes({ MediaType.WILDCARD })
-	public Response getTripByUUID(@Context HttpHeaders headers,
-			@ApiParam(value = "UUID of trip that needs to be fetched",
-					required = true) @PathParam("tripUUID") String tripUUId)
+	public Response getTripByUUID(
+			@Context HttpHeaders headers,
+			@ApiParam(value = "UUID of trip that needs to be fetched", required = true) @PathParam("tripUUID") String tripUUId)
 	{
 		return TripHandler.getTrip(headers, tripUUId).build();
 	}
 
 	@GET
-	@ApiOperation(
-			value = "Get all trips",
-			notes = "Returns a list of all trips in a given radius from a geo coordination",
-			response = TripResponse.class)
+	@ApiOperation(value = "Get all trips", notes = "Returns a list of all trips in a given radius from a geo coordination", response = TripResponse.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Invalid ID supplied"),
+			@ApiResponse(code = 404, message = "Trip not found") })
+	@Consumes({ MediaType.WILDCARD })
+	public Response getAllTrips(@Context HttpHeaders headers)
+	{
+		return TripHandler.getTrips(headers).build();
+	}
+
+	@GET
+	@ApiOperation(value = "Get all trips", notes = "Returns a list of all trips in a given radius from a geo coordination", response = TripResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
 	@Consumes({ MediaType.WILDCARD })
 	public Response getAllTripsWithGeoCoordinates(
-			@ApiParam(value = "Latitude of the Geo Coordinate",
-					required = false) @QueryParam("latitude") Double latitude,
-			@ApiParam(value = "Longitude of the Geo Coordinate",
-					required = false) @QueryParam("longitude") Double longitude,
-			@ApiParam(value = "The radius with the geo coordinates as center",
-					required = false) @QueryParam("radius") Integer radius)
+			@Context HttpHeaders headers,
+			@ApiParam(value = "Latitude of the Geo Coordinate", required = false) @QueryParam("latitude") Double latitude,
+			@ApiParam(value = "Longitude of the Geo Coordinate", required = false) @QueryParam("longitude") Double longitude,
+			@ApiParam(value = "The radius with the geo coordinates as center", required = false) @QueryParam("radius") Integer radius)
 	{
-		return TripHandler.getTrips(latitude, longitude, radius).build();
+		return TripHandler.getTrips(headers, latitude, longitude, radius)
+				.build();
 	}
 
 	@POST
-	@ApiOperation(value = "Create a trip",
-			notes = "Creates a new trip based on the JSON",
-			response = BaseResponse.class)
+	@ApiOperation(value = "Create a trip", notes = "Creates a new trip based on the JSON", response = BaseResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@XmlTransient
-	public Response createTrip(Trip trip)
+	public Response createTrip(@Context HttpHeaders headers, Trip trip)
 	{
-		return TripHandler.insertTrip(trip).build();
+		return TripHandler.insertTrip(headers, trip).build();
 	}
 
 	@PUT
 	@Path("/{tripUUID}")
-	@ApiOperation(value = "Update a trip", notes = "Updates a trip",
-			response = BaseResponse.class)
+	@ApiOperation(value = "Update a trip", notes = "Updates a trip", response = BaseResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public Response updateTrip(Trip trip,
-			@ApiParam(value = "UUID of trip that needs to be updated",
-					required = true) @PathParam("tripUUID") String tripUUId)
+	public Response updateTrip(
+			@Context HttpHeaders headers,
+			Trip trip,
+			@ApiParam(value = "UUID of trip that needs to be updated", required = true) @PathParam("tripUUID") String tripUUId)
 	{
-		return TripHandler.updateTrip(tripUUId, trip).build();
+		return TripHandler.updateTrip(headers, tripUUId, trip).build();
 	}
 
 	@DELETE
 	@Path("/{tripUUID}")
-	@ApiOperation(value = "Deletes a trip", notes = "Deletes a trip",
-			response = BaseResponse.class)
+	@ApiOperation(value = "Deletes a trip", notes = "Deletes a trip", response = BaseResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
 	@Consumes({ MediaType.WILDCARD })
 	public Response deleteTrip(
-			@ApiParam(value = "UUID of trip that needs to be deleted",
-					required = true) @PathParam("tripUUID") String tripUUId)
+			@Context HttpHeaders headers,
+			@ApiParam(value = "UUID of trip that needs to be deleted", required = true) @PathParam("tripUUID") String tripUUId)
 	{
-		return TripHandler.deleteTrip(tripUUId).build();
+		return TripHandler.deleteTrip(headers, tripUUId).build();
+	}
+
+	@POST
+	@Path("/{userUUId}/{tripUUID}")
+	@ApiOperation(value = "Book a trip", notes = "Books a trip for the logged user", response = BaseResponse.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Invalid ID supplied"),
+			@ApiResponse(code = 404, message = "Trip not found") })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public Response bookTrip(
+			@Context HttpHeaders headers,
+			@ApiParam(value = "UUID of the user", required = true) @PathParam("userUUId") String userUUID,
+			@ApiParam(value = "UUID of the trip", required = true) @PathParam("tripUUID") String tripUUId)
+	{
+		return TripHandler.bookTrip(headers, userUUID, tripUUId).build();
+
+	}
+
+	@DELETE
+	@Path("/{userUUId}/{tripUUID}")
+	@ApiOperation(value = "Unbook a trip", notes = "Unbooks a trip for the logged user", response = BaseResponse.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Invalid ID supplied"),
+			@ApiResponse(code = 404, message = "Trip not found") })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@XmlTransient
+	public Response unbookTrip(
+			@Context HttpHeaders headers,
+			@ApiParam(value = "UUID of the user", required = true) @PathParam("userUUId") String userUUID,
+			@ApiParam(value = "UUID of the trip", required = true) @PathParam("tripUUID") String tripUUId)
+	{
+		return TripHandler.unbookTrip(headers, userUUID, tripUUId).build();
+
 	}
 }

@@ -9,6 +9,8 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.apache.log4j.Logger;
 
+import de.hftl.mize.dao.UserDAO;
+import de.hftl.mize.dao.i.IUserDAO;
 import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Trip;
@@ -94,11 +96,20 @@ public class Validation
 
 	public static void isLoggedIn(HttpHeaders headers) throws BusinessException
 	{
+		IUserDAO userDao = new UserDAO();
+
 		try
 		{
-			String possibleUUID = headers.getRequestHeader("x-uuid").get(0);
+			String possibleUUID = Helper.retrieveUserUUID(headers);
 			LOGGER.debug("Validate UUID for login: " + possibleUUID);
 			UUID.fromString(possibleUUID);
+
+			if (!userDao.isLoggedIn(possibleUUID))
+			{
+				LOGGER.error("Login failed because UUID does not exist");
+				throw new BusinessException(BusinessException.USER_NOT_FOUND);
+			}
+
 		} catch (Exception ex)
 		{
 			LOGGER.error("Login failed because UUID validation failed");
@@ -117,6 +128,5 @@ public class Validation
 			LOGGER.error("User validation failed.");
 			throw new ValidationException(ValidationException.INVALID_USER);
 		}
-		
 	}
 }

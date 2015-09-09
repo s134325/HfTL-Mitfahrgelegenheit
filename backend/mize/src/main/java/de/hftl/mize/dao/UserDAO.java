@@ -51,8 +51,7 @@ public class UserDAO implements IUserDAO
 				user.setMail(resultSet.getString("mail"));
 				user.setPhoneNumber(resultSet.getString("phone"));
 				user.setGender(Gender.valueOf(resultSet.getString("gender")));
-			}
-			else
+			} else
 			{
 				throw new BusinessException(BusinessException.USER_NOT_FOUND);
 			}
@@ -66,9 +65,62 @@ public class UserDAO implements IUserDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e)
+			{
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
+		}
+	}
+
+	@Override
+	public Boolean isLoggedIn(String userUUID) throws BusinessException
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		try
+		{
+			BasicDataSource bds = DataSource.getInstance().getBds();
+
+			connection = bds.getConnection();
+
+			statement = connection
+					.prepareStatement("SELECT * FROM `user` WHERE uuid = ?;");
+
+			statement.setString(1, userUUID);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next())
+			{
+				return true;
+			} else
+			{
+				throw new BusinessException(BusinessException.USER_NOT_FOUND);
+			}
+
+		} catch (SQLException e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
+		{
+			try
+			{
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());
@@ -121,9 +173,12 @@ public class UserDAO implements IUserDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());
@@ -164,8 +219,7 @@ public class UserDAO implements IUserDAO
 				returnUser.setPhoneNumber(resultSet.getString("phone"));
 				returnUser.setGender(Gender.valueOf(resultSet
 						.getString("gender")));
-			}
-			else
+			} else
 			{
 				throw new BusinessException(BusinessException.USER_NOT_FOUND);
 			}
@@ -179,9 +233,12 @@ public class UserDAO implements IUserDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());

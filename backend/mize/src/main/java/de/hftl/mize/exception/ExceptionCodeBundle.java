@@ -13,6 +13,8 @@ public class ExceptionCodeBundle extends ListResourceBundle
 			{ BusinessException.TRIP_CREATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_UPDATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_DELETE_FAILED, new Integer(500) },
+			{ BusinessException.TRIP_BOOK_FAILED, new Integer(500) },
+			{ BusinessException.TRIP_UNBOOK_FAILED, new Integer(500) },
 
 			// Vehicle Exceptions
 			{ BusinessException.VEHICLE_NOT_FOUND, new Integer(404) },

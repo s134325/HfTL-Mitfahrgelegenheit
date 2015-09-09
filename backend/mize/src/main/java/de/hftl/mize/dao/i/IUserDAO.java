@@ -17,4 +17,6 @@ public interface IUserDAO
 
 	public User loginUser(User user) throws BusinessException;
 
+	public Boolean isLoggedIn(String userUUID) throws BusinessException;
+
 }

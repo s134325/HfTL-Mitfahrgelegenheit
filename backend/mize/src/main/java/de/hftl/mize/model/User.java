@@ -10,6 +10,7 @@ public class User
 	public String	password;
 	public String	phoneNumber;
 	public Gender	gender;
+	public String	role;
 
 	public User()
 	{
@@ -48,7 +49,8 @@ public class User
 	}
 
 	/**
-	 * @param uuid the uuid to set
+	 * @param uuid
+	 *            the uuid to set
 	 */
 	public void setUuid(String uuid)
 	{
@@ -64,7 +66,8 @@ public class User
 	}
 
 	/**
-	 * @param username the username to set
+	 * @param username
+	 *            the username to set
 	 */
 	public void setUsername(String username)
 	{
@@ -80,7 +83,8 @@ public class User
 	}
 
 	/**
-	 * @param firstName the firstName to set
+	 * @param firstName
+	 *            the firstName to set
 	 */
 	public void setFirstName(String firstName)
 	{
@@ -96,7 +100,8 @@ public class User
 	}
 
 	/**
-	 * @param lastName the lastName to set
+	 * @param lastName
+	 *            the lastName to set
 	 */
 	public void setLastName(String lastName)
 	{
@@ -112,7 +117,8 @@ public class User
 	}
 
 	/**
-	 * @param mail the mail to set
+	 * @param mail
+	 *            the mail to set
 	 */
 	public void setMail(String mail)
 	{
@@ -128,7 +134,8 @@ public class User
 	}
 
 	/**
-	 * @param password the password to set
+	 * @param password
+	 *            the password to set
 	 */
 	public void setPassword(String password)
 	{
@@ -144,7 +151,8 @@ public class User
 	}
 
 	/**
-	 * @param phoneNumber the phoneNumber to set
+	 * @param phoneNumber
+	 *            the phoneNumber to set
 	 */
 	public void setPhoneNumber(String phoneNumber)
 	{
@@ -160,10 +168,21 @@ public class User
 	}
 
 	/**
-	 * @param gender the gender to set
+	 * @param gender
+	 *            the gender to set
 	 */
 	public void setGender(Gender gender)
 	{
 		this.gender = gender;
+	}
+
+	public String getRole()
+	{
+		return role;
+	}
+
+	public void setRole(String role)
+	{
+		this.role = role;
 	}
 }

@@ -3,6 +3,7 @@ package de.hftl.mize.system;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
@@ -74,6 +75,19 @@ public class Helper
 		Timestamp t = new Timestamp(parser2.parseMillis(jtdate));
 
 		return t;
+	}
+
+	public static String retrieveUserUUID(HttpHeaders headers)
+			throws BusinessException
+	{
+		try
+		{
+			return headers.getRequestHeader("x-uuid").get(0);
+		} catch (IllegalStateException | IndexOutOfBoundsException e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.SYSTEM_ERROR);
+		}
 	}
 
 	/**
