@@ -66,7 +66,6 @@ public class UserResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied")})
 	@Consumes({ MediaType.WILDCARD })
-	@XmlTransient
 	public Response loginUser(User user)
 	{
 		return UserHandler.loginUser(user).build();

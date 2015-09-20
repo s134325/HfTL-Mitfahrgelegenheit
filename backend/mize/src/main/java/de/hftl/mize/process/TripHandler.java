@@ -170,6 +170,7 @@ public class TripHandler
 		{
 			Validation.isUUID(tripUUID);
 			Validation.isLoggedIn(headers);
+			
 			Validation.isValidTripObject(trip);
 
 			Boolean isUpdated = tripDAO.updateTrip(tripUUID, trip);

@@ -72,14 +72,14 @@ public class TripDAO implements ITripDAO
 				trip.setUuid(resultSet.getString("uuid"));
 				trip.setFrom(from);
 				trip.setTo(to);
-				trip.setStartTime(resultSet.getString("startTime"));
+				trip.setStartTime(resultSet.getString("start_time"));
 				trip.setFreeSeats(resultSet.getInt("free_seats"));
 				trip.setDescription(resultSet.getString("description"));
 				trip.setPrice(resultSet.getDouble("price"));
 				trip.setActive(resultSet.getBoolean("active"));
 				trip.setParticipants(getParticipants(resultSet.getInt("id")));
-				trip.setUpdateTime(resultSet.getString("startTime"));
-				trip.setCreateTime(resultSet.getString("startTime"));
+				trip.setUpdateTime(resultSet.getString("update_time"));
+				trip.setCreateTime(resultSet.getString("create_time"));
 
 				alTrip.add(trip);
 			}
@@ -425,10 +425,10 @@ public class TripDAO implements ITripDAO
 
 		Integer locationFromId = 0;
 		Integer locationToId = 0;
+		UUID tripUUID = UUID.randomUUID();
 
 		try
 		{
-			UUID tripUUID = UUID.randomUUID();
 
 			locationFromId = locationDAO.setLocation(trip.getFrom());
 			locationToId = locationDAO.setLocation(trip.getTo());
@@ -438,11 +438,10 @@ public class TripDAO implements ITripDAO
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("INSERT INTO trip t, user_trip ut "
-							+ " (t.uuid, t.location_id_from, t.location_id_to, "
-							+ " t.start_time, t.free_seats, t.description, t.price, t.active"
-							+ " ut.user_id, ut.trip_id, ut.type) VALUES "
-							+ " (?, ?, ?, ?, ?, ?, ?, ?, (SELECT id FROM user u WHERE u.uuid = ?), LAST_INSERT_ID(), 'OWNER');");
+					.prepareStatement("INSERT INTO trip"
+							+ " (uuid, location_id_from, location_id_to, "
+							+ " start_time, free_seats, description, price, active) VALUES "
+							+ " (?, ?, ?, ?, ?, ?, ?, ?);");
 
 			statement.setString(1, tripUUID.toString());
 			statement.setInt(2, locationFromId);
@@ -453,7 +452,17 @@ public class TripDAO implements ITripDAO
 			statement.setString(6, trip.getDescription());
 			statement.setDouble(7, trip.getPrice());
 			statement.setBoolean(8, trip.getActive());
-			statement.setString(9, userUUID);
+
+			statement.executeUpdate();
+			statement.close();
+			
+			statement = connection
+					.prepareStatement("INSERT INTO user_trip "
+							+ " (user_id, trip_id, type)"
+							+ " VALUES ((SELECT id FROM user u WHERE u.uuid = ?), (SELECT id FROM trip t WHERE t.uuid = ?), 'OWNER')");
+
+			statement.setString(1, userUUID);
+			statement.setString(2, tripUUID.toString());
 
 			statement.executeUpdate();
 
@@ -463,6 +472,15 @@ public class TripDAO implements ITripDAO
 		{
 			locationDAO.deleteLocation(locationFromId);
 			locationDAO.deleteLocation(locationToId);
+			
+			try
+			{
+				deleteTrip(tripUUID.toString());
+			} catch (ValidationException e1)
+			{
+				LOGGER.fatal(e1);
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
 
 			LOGGER.fatal(e);
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
@@ -478,6 +496,7 @@ public class TripDAO implements ITripDAO
 					connection.close();
 			} catch (SQLException e)
 			{
+				
 				LOGGER.fatal(e.getMessage());
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
@@ -551,8 +570,8 @@ public class TripDAO implements ITripDAO
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("INSERT INTO user_trip ut "
-							+ " (ut.user_id, ut.trip_id, ut.type) VALUES "
+					.prepareStatement("INSERT INTO user_trip "
+							+ " (user_id, trip_id, type) VALUES "
 							+ " ((SELECT id FROM user u WHERE u.uuid = ?), (SELECT id FROM trip t WHERE t.uuid = ?), 'PASSENGER');");
 
 			statement.setString(1, userUUID);

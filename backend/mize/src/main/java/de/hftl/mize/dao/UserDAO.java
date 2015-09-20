@@ -194,7 +194,6 @@ public class UserDAO implements IUserDAO
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
-		User returnUser = new User();
 
 		try
 		{
@@ -205,11 +204,13 @@ public class UserDAO implements IUserDAO
 			statement = connection
 					.prepareStatement("SELECT * FROM `user` WHERE register_number = ? AND password = ?;");
 
-			statement.setString(1, returnUser.getUsername());
-			statement.setString(2, returnUser.getPassword());
+			statement.setString(1, user.getUsername());
+			statement.setString(2, user.getPassword());
 
 			resultSet = statement.executeQuery();
 
+			User returnUser = new User();
+			
 			if (resultSet.next())
 			{
 				returnUser.setUuid(resultSet.getString("uuid"));

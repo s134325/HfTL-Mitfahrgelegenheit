@@ -8,6 +8,7 @@ import de.hftl.mize.dao.UserDAO;
 import de.hftl.mize.dao.i.IUserDAO;
 import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
+import de.hftl.mize.model.Status;
 import de.hftl.mize.model.User;
 import de.hftl.mize.response.UserResponse;
 import de.hftl.mize.system.Helper;
@@ -87,9 +88,11 @@ public class UserHandler
 				throw new BusinessException(BusinessException.USER_LOGIN_FAILED);
 			}
 
-			response.setUuid(user.getUuid());
+			response.setUuid(returnUser.getUuid());
+			response.setStatus(new Status("SUCCESS", "Login was successfull"));
 
 			return Response.status(200).entity(response);
+			
 		} catch (BusinessException e)
 		{
 			return Helper.buildErrorResponse(e);

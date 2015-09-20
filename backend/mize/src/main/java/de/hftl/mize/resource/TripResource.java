@@ -62,7 +62,7 @@ public class TripResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
-	@Consumes({ MediaType.WILDCARD })
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
 	public Response getAllTripsWithGeoCoordinates(
 			@Context HttpHeaders headers,
 			@ApiParam(value = "Latitude of the Geo Coordinate", required = false) @QueryParam("latitude") Double latitude,
