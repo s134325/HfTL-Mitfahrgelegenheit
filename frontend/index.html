@@ -1,0 +1,436 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="extensions/bootstrap-datepicker-1.4.0-dist/css/bootstrap-datepicker3.min.css">
+        <link rel="stylesheet" type="text/css" href="extensions/sweetalert-master/dist/sweetalert.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.20&libraries=places"></script>
+
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MiZe</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li data-target="#tripCarousel" data-slide-to="0"><a href="#">Fahrt suchen</a></li>
+                        <li data-target="#tripCarousel" data-slide-to="1"><a href="#">Fahrt anbieten</a></li>
+
+                    </ul>
+                    <div id="logout"  style="display: none;" class="navbar-form navbar-right">
+                        <button type="button" class="btn btn-danger" onclick="javascript:location.reload();">Logout</button>
+
+                    </div>
+                    <form class="navbar-form navbar-right" role="form" id="login">
+                        <div class="form-group">
+                            <input type="text" placeholder="Matrikelnummer" id="login-username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Passwort" id="login-password" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success">Anmelden</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">Registrieren</button>
+                    </form>
+                </div><!--/.navbar-collapse -->
+            </div>
+        </nav>
+
+        <div class="jumbotron">
+            <div class="container">
+                <div id="tripCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <div id="map-canvas"></div>
+                            <div id="search-form" class="row">
+                                <div class="col-md-12">
+                                    <h3>Finde deine Mitfahrgelegenheit</h3>
+                                    <form id="find-trip">
+                                        <div class="form-group">
+                                            <label for="find-trip-from" class="sr-only">Von</label>
+                                            <div class="input-group" data-toggle="tooltip" data-placement="right" title="Von wo m&ouml;chtest du abfahren?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-play"></div></div>
+                                                <input type="text" class="form-control" id="find-trip-from" placeholder="Von" required="" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="find-trip-to" class="sr-only">Nach</label>
+                                            <div class="input-group" data-toggle="tooltip" data-placement="right" title="Wohin m&ouml;chtest du fahren?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-flag"></div></div>
+                                                <input type="text" class="form-control" id="find-trip-to" placeholder="Nach" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="find-trip-date" class="sr-only">Datum</label>
+                                            <div class="input-group"  data-toggle="tooltip" data-placement="right" title="Wann m&ouml;chtest du fahren?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-calendar"></div></div>
+                                                <input type="text" class="form-control" id="find-trip-date" required="" >
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block" >Suchen</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-12">
+                                    <!--h4>Verlauf</h4>
+                                    <div class="empty-history">Du hast bisher keinen Verlauf...</div-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="col-md-11" style="position: relative;">
+                                <div id="provide-trip-blocker" >
+                                    <div>Bitte melde dich zun&auml;chst an!</div>
+                                </div>
+                                <div  id="provide-trip-parent" class="disabled">
+                                    <h3>Fahrt anbieten</h3>
+                                    <form id="provide-trip">
+                                        <div class="form-group">
+                                            <label for="provide-trip-from" class="sr-only">Von</label>
+                                            <div class="input-group" data-toggle="tooltip" data-placement="right" title="Von wo m&ouml;chtest du starten?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-play"></div></div>
+                                                <input type="text" class="form-control" id="provide-trip-from" placeholder="Von" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="provide-trip-to" class="sr-only">Nach</label>
+                                            <div class="input-group" data-toggle="tooltip" data-placement="right" title="Wohin m&ouml;chtest du fahren?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-flag"></div></div>
+                                                <input type="text" class="form-control" id="provide-trip-to" placeholder="Nach" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="provide-trip-date" class="sr-only">Datum</label>
+                                            <div class="input-group"  data-toggle="tooltip" data-placement="right" title="Wann m&ouml;chtest du fahren?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-calendar"></div></div>
+                                                <input type="text" class="form-control" id="provide-trip-date"  required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="provide-trip-freeseats" class="sr-only">Freie Sitzpl&auml;tze</label>
+                                            <div class="input-group"  data-toggle="tooltip" data-placement="right" title="Anzahl der freien Sitzpl&auml;tze?" >
+                                                <div class="input-group-addon"><div class="glyphicon glyphicon-heart-empty"></div></div>
+                                                <input type="text" class="form-control" id="provide-trip-freeseats"  required="">
+                                            </div>
+                                        </div>
+                                        <p class="text-center">
+                                            <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#provide-trip-additional-settings-collapse" aria-expanded="false" aria-controls="collapseExample">
+                                                <div class="glyphicon glyphicon-chevron-down small "></div> Weitere Einstellungen <div class="glyphicon glyphicon-chevron-down small "></div>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="provide-trip-additional-settings-collapse">
+
+                                            <div class="form-group">
+                                                <label for="provide-trip-price" class="sr-only">Preis</label>
+                                                <div class="input-group"  data-toggle="tooltip" data-placement="right" title="Zuschuss zum Sprit??" >
+                                                    <div class="input-group-addon"><div class="glyphicon glyphicon-euro"></div></div>
+                                                    <input type="text" class="form-control" id="provide-trip-price" placeholder="Preis" >
+                                                    <div class="input-group-addon">.00</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="provide-trip-description" class="sr-only">Beschreibung</label>
+                                                <div class="input-group"  data-toggle="tooltip" data-placement="right" title="M&ouml;chtest du noch was sagen?" >
+                                                    <div class="input-group-addon"><div class="glyphicon glyphicon-font"></div></div>
+                                                    <textarea class="form-control" id="provide-trip-description" rows="3" placeholder="Beschreibung"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class=" btn btn-primary btn-block">Weiter</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.jumbotron -->
+
+        <div class="container">
+            <div id="home">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Wer</h2>
+                        <p>
+                            Im Rahmen des Moduls Softwareengineering bei Professorin Wieland schlossen sich sechs berufsbegleitende Wirtschaftsinformatikstudenten (BWI13) zusammen und entwickelten die Mitfahrzentrale &QUOT;MiZe&QUOT; f&uuml;r die Hochschule f&uuml;r Telekommunikation in Leipzig.
+                            <span class="collapse" id="collapseWho">
+                                Kontaktanfragen k&ouml;nnen direkt &uuml;ber Professorin Wieland an das MiZe Team adressiert werden.
+                            </span>
+                        </p>
+                        <p><a class="btn btn-default"  role="button" data-toggle="collapse" href="#collapseWho" aria-expanded="false" aria-controls="collapseExample">View details &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Was</h2>
+                        <p>
+                            MiZe ist eine von und f&uuml;r Studenten entwickelte Mitfahrzentrale der HfTL.
+                            <span class="collapse" id="collapseWhat">
+                                In Zeiten der digitalen Vernetzung dient MiZe der Vermittlung von Mitfahrgelegenheiten zu den regelm&auml;&szlig;igen Pr&auml;senzphasen der dualen und berufsbegleitenden Studenten der HfTL. MiZe ist allerdings keine Bezahlplattform. Die Bedingungen, zu welchen die Fahrten gebucht werden, k&ouml;nnen frei zwischen den jeweiligen Studenten ausgehandelt werden. Eventuelle Zahlungen werden nicht &uuml;ber MiZe abgewickelt. 
+                            </span>
+                        </p>
+                        <p><a class="btn btn-default" role="button" data-toggle="collapse" href="#collapseWhat" aria-expanded="false" aria-controls="collapseExample">View details &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Warum</h2>
+                        <p>
+                            Duale und berufsbegleitende Studieng&auml;nge an der HfTL erfordern regelm&auml;&szlig;ig im Jahr mehrt&auml;gige Pr&auml;senzphasen, die aufgrund der Anreise und Unterkunft zu erh&ouml;hten Kosten f&uuml;hren. 
+                            <span class="collapse" id="collapseWhy">
+                                Mit Hilfe der Mitfahrzentrale MiZe k&ouml;nnen zu mindestens die Anreisekosten deutlich gesenkt werden, da Fahrten relativ einfach von und f&uuml;r Studenten angeboten, eingesehen und gebucht werden k&ouml;nnen. L&auml;ngere Strecken mit dem Auto k&ouml;nnen somit durch zus&auml;tzliche Mitfahrer launisch, effizient und preisg&uuml;nstiger gestaltet werden. MiZe erm&ouml;glicht den Studenten neben der preiswerteren Anreise somit auch den freiwilligen Austausch von Wissen und Lerninhalten und tr&auml;gt zudem zum Schutz der Umwelt bei. Statistiken zeigen, dass Mitfahrzentralen gegen&uuml;ber Z&uuml;gen und Fernbussen deutlich g&uuml;nstiger, schneller, sozialer und attraktiver sind.<br/>
+                                Worauf wartet Ihr noch? MiZe nutzen und Geld sparen … 
+                            </span>
+                        </p>
+                        <p><a class="btn btn-default" role="button" data-toggle="collapse" href="#collapseWhy" aria-expanded="false" aria-controls="collapseExample">View details &raquo;</a></p>
+                    </div>
+                </div>
+            </div>
+            <div id="results">
+                <h2>Suchergebnisse</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Start</th>
+                            <th>Ziel</th>
+                            <th>Preis</th>
+                            <th>Sitzpl&auml;tze</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Berlin</td>
+                            <td>Leipzig</td>
+                            <td>Larry</td>
+                            <td>100</td>
+                            <td>BUCHEN</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+            <footer>
+                <p>&copy; MiZe 2015</p>
+            </footer>
+        </div> <!-- /.container -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="register">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myRegisterModalLabel">Registrieren</h4>
+                    </div>
+                    <form role="form" id="register" >
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <tr>
+                                    <td>Matrikelnummer</td>
+                                    <td><input type="text" id="register-username" name="username" class="form-control" required="" placeholder="s134312" pattern="s[0-9]{6}"/></td>
+                                </tr>
+                                <tr>
+                                    <td id="register-password1-label">Passwort</td>
+                                    <td><input type="password" id="register-password1" name="password" class="form-control" required="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Passwort best&auml;tigen</td>
+                                    <td><input type="password" id="register-password2" name="password2" class="form-control" required=""  /></td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td><input type="text" id="register-last-name" name="lastName" class="form-control" required="" placeholder="Monster" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Vorname</td>
+                                    <td><input type="text" id="register-first-name" name="firstName" class="form-control" required="" placeholder="Kr&uuml;mel" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Mail</td>
+                                    <td><input type="text" id="register-mail" name="mail" class="form-control" required="" readonly=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>Telefon</td>
+                                    <td><input type="text" id="register-phone" name="phone" class="form-control" required="" placeholder="0151 12345678" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Geschlecht</td>
+                                    <td>
+                                        <select class="form-control" id="register-gender" name="gender">
+                                            <option value="MALE">m&auml;nnlich</option>
+                                            <option value="FEMALE">weiblich</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" ></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Abschlie&szlig;en</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myInfoModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myInfoModalLabel">Fahrt Informationen</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Start</td>
+                                <td>Berlin</td>
+                            </tr>
+                            <tr>
+                                <td>Ziel</td>
+                                <td>Leipzig</td>
+                            </tr>
+                            <tr>
+                                <td>Fahrer</td>
+                                <td>Larry</td>
+                            </tr>
+                            <tr>
+                                <td>Fahrzeug</td>
+                                <td>Porsche 911</td>
+                            </tr>
+                            <tr>
+                                <td>Sitzpl&auml;tze</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>Dynamisch geladene ID</td>
+                                <td class="id"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Buchen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="provide-trip-info-modal" tabindex="-1" role="dialog" aria-labelledby="provide-trip-info-modal-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="provide-trip-info-modal-label">Fahrt Informationen pr&uuml;fen</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="provide-trip-1">
+                            <strong>Fahrt</strong>
+                            <table class="table table-hover">
+                                <tr>
+                                    <td>Start</td>
+                                    <td id="provide-trip-1-from">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Ziel</td>
+                                    <td id="provide-trip-1-to">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Datum</td>
+                                    <td id="provide-trip-1-date">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Fahrzeug</td>
+                                    <td id="provide-trip-1-vehicle">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Sitzpl&auml;tze</td>
+                                    <td id="provide-trip-1-seating">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Preis</td>
+                                    <td id="provide-trip-1-price">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Beschreibung</td>
+                                    <td id="provide-trip-1-description">...</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="provide-trip-2">
+                            <strong>Fahrt 2</strong>
+                            <table class="table table-hover">
+                                <tr>
+                                    <td>Start</td>
+                                    <td id="provide-trip-2-from">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Ziel</td>
+                                    <td id="provide-trip-2-to">...</td>
+                                </tr>
+                                <tr>
+                                    <td>Datum</td>
+                                    <td id="provide-trip-2-date">...</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Die &uuml;brigen Einstellungen werden von Fahrt 1 &uuml;bernommen.</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="provide-trip-submit">Anbieten</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="extensions/bootstrap-datepicker-1.4.0-dist/js/bootstrap-datepicker.min.js"></script>
+        <script src="extensions/bootstrap-datepicker-1.4.0-dist/locales/bootstrap-datepicker.de.min.js" charset="UTF-8"></script>
+        <script src="extensions/sweetalert-master/dist/sweetalert.min.js"></script> 
+
+        <script src="js/model/trip.js"></script>
+
+        <script src="js/bootstrap.class.js"></script>
+        <script src="js/map.class.js"></script>
+        <script src="js/trip.class.js"></script>
+        <script src="js/system.class.js"></script>
+        <script src="js/request.class.js"></script>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

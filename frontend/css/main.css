@@ -1,0 +1,94 @@
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.jumbotron .container{
+    position: relative;
+}
+.carousel-inner{
+    min-height: 400px;
+
+}
+#map-canvas{
+    height: 400px;
+    margin: 0px;
+    padding: 0px
+}
+#search-form{
+    position: absolute;
+    top: 0px;
+    left: 0;
+    z-index: 999;
+    background: rgba(255,255,255,0.7);
+    display: block;
+    padding: 0px 15px 15px 15px;
+    height: 400px;
+    max-width: 400px;
+}
+#provide-trip-return{
+    display: none;
+
+}
+
+#provide-trip-1-description{
+
+    word-wrap: break-word;
+}
+
+/* ==========================================================================
+   Views
+   ========================================================================== */
+#provide-trip-blocker{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(200,200,200, 0); 
+    z-index:9999
+}
+#provide-trip-parent.disabled{
+    opacity: 0.5;
+}
+#provide-trip-blocker div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: rotate(330deg);
+    -ms-transform: rotate(330deg);
+    -o-transform: rotate(330deg);
+    -webkit-transform: rotate(330deg);
+    width:400px;
+    font-size: 30px;
+    margin-left: -175px;
+}
+
+#results{
+    display: none;
+}
+
+
+/* ==========================================================================
+   Global styles
+   ========================================================================== */
+
+
+
+
+.pointer{
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
