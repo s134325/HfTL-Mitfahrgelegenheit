@@ -1,0 +1,4 @@
+* http://www.karlsberg.de/public/img/drive.jpg --> ddad.jpg
+* http://m.c.lnkd.licdn.com/mpr/mpr/p/4/005/0a3/399/3b6ab05.jpg --> tu.jpg & td.jpg
+* http://i3.cpcache.com/product/573208462/challenge_accepted.jpg%3Fheight%3D400%26width%3D400%26qv%3D90%26AttributeValue%3DPoster%26Size%3D32x25 --> challenge_accepted.jpg
+* http://www.stepmap.de/landkarte/deutschlandkarte-111483.png --> karte.png
