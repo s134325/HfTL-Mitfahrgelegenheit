@@ -88,7 +88,7 @@ public class VehicleResource
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Invalid ID supplied"),
 			@ApiResponse(code = 404, message = "Trip not found") })
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.WILDCARD })
 	public Response updateVehicle(
 			Vehicle vehicle,
 			@ApiParam(value = "UUID of vehicle that needs to be updated",

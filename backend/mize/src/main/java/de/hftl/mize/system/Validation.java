@@ -5,10 +5,16 @@ package de.hftl.mize.system;
 
 import java.util.UUID;
 
+import javax.ws.rs.core.HttpHeaders;
+
 import org.apache.log4j.Logger;
 
+import de.hftl.mize.dao.UserDAO;
+import de.hftl.mize.dao.i.IUserDAO;
+import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Trip;
+import de.hftl.mize.model.User;
 
 /**
  * This class handles all cases of validation, especially user input
@@ -85,6 +91,42 @@ public class Validation
 		{
 			LOGGER.error("Trip validation failed.");
 			throw new ValidationException(ValidationException.INVALID_TRIP);
+		}
+	}
+
+	public static void isLoggedIn(HttpHeaders headers) throws BusinessException
+	{
+		IUserDAO userDao = new UserDAO();
+
+		try
+		{
+			String possibleUUID = Helper.retrieveUserUUID(headers);
+			LOGGER.debug("Validate UUID for login: " + possibleUUID);
+			UUID.fromString(possibleUUID);
+
+			if (!userDao.isLoggedIn(possibleUUID))
+			{
+				LOGGER.error("Login failed because UUID does not exist");
+				throw new BusinessException(BusinessException.USER_NOT_FOUND);
+			}
+
+		} catch (Exception ex)
+		{
+			LOGGER.error("Login failed because UUID validation failed");
+			throw new BusinessException(BusinessException.USER_NOT_FOUND);
+		}
+	}
+
+	public static void isValidUserObject(User user) throws ValidationException
+	{
+		LOGGER.debug("Validate user: " + user.toString());
+
+		if (user.getFirstName() == null || user.getLastName() == null
+				|| user.getMail() == null || user.getPassword() == null
+				|| user.getUsername() == null || user.getGender() == null)
+		{
+			LOGGER.error("User validation failed.");
+			throw new ValidationException(ValidationException.INVALID_USER);
 		}
 	}
 }

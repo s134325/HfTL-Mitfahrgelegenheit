@@ -18,6 +18,7 @@ import de.hftl.mize.exception.BusinessException;
 import de.hftl.mize.exception.ValidationException;
 import de.hftl.mize.model.Location;
 import de.hftl.mize.model.Trip;
+import de.hftl.mize.model.User;
 import de.hftl.mize.system.DataSource;
 import de.hftl.mize.system.Helper;
 
@@ -68,16 +69,17 @@ public class TripDAO implements ITripDAO
 				Location to = locationDAO.getLocation(resultSet
 						.getInt("location_id_to"));
 
-				trip.setUuid(resultSet.getString("id"));
+				trip.setUuid(resultSet.getString("uuid"));
 				trip.setFrom(from);
 				trip.setTo(to);
-				trip.setStartTime(resultSet.getString("startTime"));
+				trip.setStartTime(resultSet.getString("start_time"));
 				trip.setFreeSeats(resultSet.getInt("free_seats"));
 				trip.setDescription(resultSet.getString("description"));
 				trip.setPrice(resultSet.getDouble("price"));
 				trip.setActive(resultSet.getBoolean("active"));
-				trip.setUpdateTime(resultSet.getString("startTime"));
-				trip.setCreateTime(resultSet.getString("startTime"));
+				trip.setParticipants(getParticipants(resultSet.getInt("id")));
+				trip.setUpdateTime(resultSet.getString("update_time"));
+				trip.setCreateTime(resultSet.getString("create_time"));
 
 				alTrip.add(trip);
 			}
@@ -95,9 +97,12 @@ public class TripDAO implements ITripDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());
@@ -105,6 +110,65 @@ public class TripDAO implements ITripDAO
 			}
 		}
 
+	}
+
+	private ArrayList<User> getParticipants(Integer tripId)
+			throws BusinessException
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		ArrayList<User> alUser = new ArrayList<>();
+
+		try
+		{
+			BasicDataSource bds = DataSource.getInstance().getBds();
+
+			connection = bds.getConnection();
+
+			statement = connection
+					.prepareStatement("SELECT ut.*, u.* FROM user_trip ut, user u WHERE ut.trip_id = ? AND u.id = ut.user_id;");
+
+			statement.setInt(1, tripId);
+
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next())
+			{
+
+				User user = new User();
+
+				user.setUuid(resultSet.getString("u.uuid"));
+				user.setFirstName(resultSet.getString("u.first_name"));
+				user.setLastName(resultSet.getString("u.last_name"));
+				user.setMail(resultSet.getString("u.mail"));
+				user.setRole(resultSet.getString("ut.type"));
+
+				alUser.add(user);
+			}
+
+			return alUser;
+		} catch (SQLException e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
+		{
+			try
+			{
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e)
+			{
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
+		}
 	}
 
 	/**
@@ -131,7 +195,7 @@ public class TripDAO implements ITripDAO
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("SELECT `id`, ( 6373 * acos( cos( radians( ? ) ) * cos( radians( `latitude` ) ) * cos( radians( `longitude` ) - radians( ? ) ) + sin(radians(?)) * sin(radians(`latitude`)) ) ) `distance `FROM `location` HAVING  `distance` < ? ORDER BY `distance` LIMIT 25");
+					.prepareStatement("SELECT `id`, ( 6373 * acos( cos( radians( ? ) ) * cos( radians( `latitude` ) ) * cos( radians( `longitude` ) - radians( ? ) ) + sin(radians(?)) * sin(radians(`latitude`)) ) ) AS `distance` FROM `location` HAVING  `distance` < ? ORDER BY `distance` LIMIT 25");
 
 			statement.setDouble(1, lat);
 			statement.setDouble(2, lon);
@@ -173,9 +237,12 @@ public class TripDAO implements ITripDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());
@@ -228,6 +295,7 @@ public class TripDAO implements ITripDAO
 				trip.setUuid(resultSet.getString("uuid"));
 				trip.setFrom(from);
 				trip.setTo(to);
+				trip.setParticipants(getParticipants(resultSet.getInt("id")));
 				trip.setStartTime(resultSet.getString("start_time"));
 				trip.setFreeSeats(resultSet.getInt("free_seats"));
 				trip.setDescription(resultSet.getString("description"));
@@ -235,8 +303,7 @@ public class TripDAO implements ITripDAO
 				trip.setActive(resultSet.getBoolean("active"));
 				trip.setUpdateTime(resultSet.getString("update_time"));
 				trip.setCreateTime(resultSet.getString("create_time"));
-			}
-			else
+			} else
 			{
 				LOGGER.error("Trip with UUID: " + tripUUID + " not found");
 				throw new BusinessException(BusinessException.TRIP_NOT_FOUND);
@@ -251,9 +318,12 @@ public class TripDAO implements ITripDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());
@@ -294,7 +364,7 @@ public class TripDAO implements ITripDAO
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement(" UPDATE trip "
+					.prepareStatement("UPDATE trip "
 							+ " SET from = ?, to = ?, start_time = ?, free_seats = ?, "
 							+ " description = ?, price = ?, active = ?, update_time = ? "
 							+ " WHERE uuid = ?;");
@@ -312,8 +382,7 @@ public class TripDAO implements ITripDAO
 			if (statement.executeUpdate() > 0)
 			{
 				return true;
-			}
-			else
+			} else
 			{
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
@@ -326,9 +395,12 @@ public class TripDAO implements ITripDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				LOGGER.fatal(e.getMessage());
@@ -343,7 +415,7 @@ public class TripDAO implements ITripDAO
 	 * @return the UUID of the new Trip
 	 * @throws BusinessException
 	 */
-	public UUID insertTrip(Trip trip) throws BusinessException
+	public UUID insertTrip(String userUUID, Trip trip) throws BusinessException
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -353,10 +425,10 @@ public class TripDAO implements ITripDAO
 
 		Integer locationFromId = 0;
 		Integer locationToId = 0;
+		UUID tripUUID = UUID.randomUUID();
 
 		try
 		{
-			UUID tripUUID = UUID.randomUUID();
 
 			locationFromId = locationDAO.setLocation(trip.getFrom());
 			locationToId = locationDAO.setLocation(trip.getTo());
@@ -366,8 +438,9 @@ public class TripDAO implements ITripDAO
 			connection = bds.getConnection();
 
 			statement = connection
-					.prepareStatement("INSERT INTO trip "
-							+ " (uuid, location_id_from, location_id_to, start_time, free_seats, description, price, active) VALUES "
+					.prepareStatement("INSERT INTO trip"
+							+ " (uuid, location_id_from, location_id_to, "
+							+ " start_time, free_seats, description, price, active) VALUES "
 							+ " (?, ?, ?, ?, ?, ?, ?, ?);");
 
 			statement.setString(1, tripUUID.toString());
@@ -381,6 +454,17 @@ public class TripDAO implements ITripDAO
 			statement.setBoolean(8, trip.getActive());
 
 			statement.executeUpdate();
+			statement.close();
+			
+			statement = connection
+					.prepareStatement("INSERT INTO user_trip "
+							+ " (user_id, trip_id, type)"
+							+ " VALUES ((SELECT id FROM user u WHERE u.uuid = ?), (SELECT id FROM trip t WHERE t.uuid = ?), 'OWNER')");
+
+			statement.setString(1, userUUID);
+			statement.setString(2, tripUUID.toString());
+
+			statement.executeUpdate();
 
 			return tripUUID;
 
@@ -388,6 +472,15 @@ public class TripDAO implements ITripDAO
 		{
 			locationDAO.deleteLocation(locationFromId);
 			locationDAO.deleteLocation(locationToId);
+			
+			try
+			{
+				deleteTrip(tripUUID.toString());
+			} catch (ValidationException e1)
+			{
+				LOGGER.fatal(e1);
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
 
 			LOGGER.fatal(e);
 			throw new BusinessException(BusinessException.MYSQL_ERROR);
@@ -395,16 +488,19 @@ public class TripDAO implements ITripDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
+				
 				LOGGER.fatal(e.getMessage());
 				throw new BusinessException(BusinessException.MYSQL_ERROR);
 			}
 		}
-
 	}
 
 	/**
@@ -446,9 +542,114 @@ public class TripDAO implements ITripDAO
 		{
 			try
 			{
-				if (resultSet != null) resultSet.close();
-				if (statement != null) statement.close();
-				if (connection != null) connection.close();
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e)
+			{
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
+		}
+	}
+
+	@Override
+	public Boolean bookTrip(String userUUID, String tripUUID)
+			throws BusinessException
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		try
+		{
+			BasicDataSource bds = DataSource.getInstance().getBds();
+
+			connection = bds.getConnection();
+
+			statement = connection
+					.prepareStatement("INSERT INTO user_trip "
+							+ " (user_id, trip_id, type) VALUES "
+							+ " ((SELECT id FROM user u WHERE u.uuid = ?), (SELECT id FROM trip t WHERE t.uuid = ?), 'PASSENGER');");
+
+			statement.setString(1, userUUID);
+			statement.setString(2, tripUUID);
+
+			if (statement.executeUpdate() > 0)
+			{
+				return true;
+			}
+
+			return false;
+
+		} catch (SQLException e)
+		{
+			LOGGER.fatal(e);
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
+		{
+			try
+			{
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e)
+			{
+				LOGGER.fatal(e.getMessage());
+				throw new BusinessException(BusinessException.MYSQL_ERROR);
+			}
+		}
+	}
+
+	@Override
+	public Boolean unbookTrip(String userUUID, String tripUUID)
+			throws BusinessException
+	{
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		try
+		{
+
+			BasicDataSource bds = DataSource.getInstance().getBds();
+
+			connection = bds.getConnection();
+
+			statement = connection
+					.prepareStatement("DELETE FROM user_trip WHERE user_id = (SELECT id FROM user u WHERE u.uuid = ?) AND trip_id = (SELECT id FROM trip t WHERE t.uuid = ?);");
+
+			statement.setString(1, userUUID.toString());
+			statement.setString(2, tripUUID.toString());
+
+			if (statement.executeUpdate() > 0)
+			{
+
+				return true;
+			}
+
+			return false;
+
+		} catch (SQLException e)
+		{
+			LOGGER.fatal(e.getMessage());
+			throw new BusinessException(BusinessException.MYSQL_ERROR);
+		} finally
+		{
+			try
+			{
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
 			} catch (SQLException e)
 			{
 				throw new BusinessException(BusinessException.MYSQL_ERROR);

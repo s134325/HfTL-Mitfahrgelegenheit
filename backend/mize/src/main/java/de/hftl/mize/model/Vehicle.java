@@ -1,5 +1,8 @@
 package de.hftl.mize.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Vehicle
 {
 	public String	make;
@@ -41,6 +44,7 @@ public class Vehicle
 	/**
 	 * @return the make
 	 */
+
 	public String getMake()
 	{
 		return make;
@@ -58,6 +62,7 @@ public class Vehicle
 	/**
 	 * @return the model
 	 */
+
 	public String getModel()
 	{
 		return model;
@@ -75,6 +80,7 @@ public class Vehicle
 	/**
 	 * @return the seats
 	 */
+
 	public Integer getSeats()
 	{
 		return seats;
@@ -92,6 +98,7 @@ public class Vehicle
 	/**
 	 * @return the userId
 	 */
+
 	public String getUserId()
 	{
 		return userId;
@@ -109,6 +116,7 @@ public class Vehicle
 	/**
 	 * @return the vehicleId
 	 */
+
 	public String getVehicleId()
 	{
 		return vehicleId;

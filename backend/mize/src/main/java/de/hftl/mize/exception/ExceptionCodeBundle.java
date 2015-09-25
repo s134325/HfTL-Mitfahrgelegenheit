@@ -13,6 +13,8 @@ public class ExceptionCodeBundle extends ListResourceBundle
 			{ BusinessException.TRIP_CREATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_UPDATE_FAILED, new Integer(500) },
 			{ BusinessException.TRIP_DELETE_FAILED, new Integer(500) },
+			{ BusinessException.TRIP_BOOK_FAILED, new Integer(500) },
+			{ BusinessException.TRIP_UNBOOK_FAILED, new Integer(500) },
 
 			// Vehicle Exceptions
 			{ BusinessException.VEHICLE_NOT_FOUND, new Integer(404) },
@@ -22,7 +24,10 @@ public class ExceptionCodeBundle extends ListResourceBundle
 			{ BusinessException.VEHICLE_LITIM_EXCEEDED, new Integer(409) },
 
 			// User Exceptions
-			{ BusinessException.USER_NOT_FOUND, new Integer(404) },
+			{ BusinessException.USER_NOT_FOUND, new Integer(200) },
+			{ BusinessException.USER_SESSION_INVALID, new Integer(401) },
+			{ BusinessException.USER_INSERT_FAILED, new Integer(500) },
+			{ BusinessException.USER_LOGIN_FAILED, new Integer(200) },
 
 			// System Exceptions
 			{ BusinessException.MYSQL_ERROR, new Integer(500) },

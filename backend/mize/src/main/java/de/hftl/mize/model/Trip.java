@@ -1,5 +1,7 @@
 package de.hftl.mize.model;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -8,20 +10,21 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author tokilian
  *
  */
-@XmlRootElement
+@XmlRootElement(name = "trip")
 public class Trip
 {
 
-	public String	uuid;
-	public Location	from;
-	public Location	to;
-	public String	startTime;
-	public Integer	freeSeats;
-	public String	description;
-	public Double	price;
-	public Boolean	active;
-	public String	createTime;
-	public String	updateTime;
+	public String			uuid;
+	public Location			from;
+	public Location			to;
+	public String			startTime;
+	public Integer			freeSeats;
+	public String			description;
+	public Double			price;
+	public Boolean			active;
+	public ArrayList<User>	participants;
+	public String			createTime;
+	public String			updateTime;
 
 	/**
 	 * Constructor.
@@ -105,6 +108,7 @@ public class Trip
 	/**
 	 * @return the uuid
 	 */
+
 	public String getUuid()
 	{
 		return uuid;
@@ -114,6 +118,7 @@ public class Trip
 	 * @param uuid
 	 *            the uuid to set
 	 */
+
 	public void setUuid(String uuid)
 	{
 		this.uuid = uuid;
@@ -122,6 +127,7 @@ public class Trip
 	/**
 	 * @return the from
 	 */
+
 	public Location getFrom()
 	{
 		return from;
@@ -131,6 +137,7 @@ public class Trip
 	 * @param from
 	 *            the from to set
 	 */
+
 	public void setFrom(Location from)
 	{
 		this.from = from;
@@ -139,6 +146,7 @@ public class Trip
 	/**
 	 * @return the to
 	 */
+
 	public Location getTo()
 	{
 		return to;
@@ -148,6 +156,7 @@ public class Trip
 	 * @param to
 	 *            the to to set
 	 */
+
 	public void setTo(Location to)
 	{
 		this.to = to;
@@ -156,6 +165,7 @@ public class Trip
 	/**
 	 * @return the startTime
 	 */
+
 	public String getStartTime()
 	{
 		return startTime;
@@ -165,6 +175,7 @@ public class Trip
 	 * @param startTime
 	 *            the startTime to set
 	 */
+
 	public void setStartTime(String startTime)
 	{
 		this.startTime = startTime;
@@ -173,6 +184,7 @@ public class Trip
 	/**
 	 * @return the freeSeats
 	 */
+
 	public Integer getFreeSeats()
 	{
 		return freeSeats;
@@ -182,6 +194,7 @@ public class Trip
 	 * @param freeSeats
 	 *            the freeSeats to set
 	 */
+
 	public void setFreeSeats(Integer freeSeats)
 	{
 		this.freeSeats = freeSeats;
@@ -190,6 +203,7 @@ public class Trip
 	/**
 	 * @return the description
 	 */
+
 	public String getDescription()
 	{
 		return description;
@@ -199,6 +213,7 @@ public class Trip
 	 * @param description
 	 *            the description to set
 	 */
+
 	public void setDescription(String description)
 	{
 		this.description = description;
@@ -207,6 +222,7 @@ public class Trip
 	/**
 	 * @return the price
 	 */
+
 	public Double getPrice()
 	{
 		return price;
@@ -216,6 +232,7 @@ public class Trip
 	 * @param price
 	 *            the price to set
 	 */
+
 	public void setPrice(Double price)
 	{
 		this.price = price;
@@ -224,6 +241,7 @@ public class Trip
 	/**
 	 * @return the active
 	 */
+
 	public Boolean getActive()
 	{
 		return active;
@@ -233,14 +251,31 @@ public class Trip
 	 * @param active
 	 *            the active to set
 	 */
+
 	public void setActive(Boolean active)
 	{
 		this.active = active;
 	}
 
+	public ArrayList<User> getParticipants()
+	{
+		return participants;
+	}
+
+	public void setParticipants(ArrayList<User> participants)
+	{
+		this.participants = participants;
+	}
+
+	public void setParticipant(User participant)
+	{
+		this.participants.add(participant);
+	}
+
 	/**
 	 * @return the createTime
 	 */
+
 	public String getCreateTime()
 	{
 		return createTime;
@@ -250,6 +285,7 @@ public class Trip
 	 * @param createTime
 	 *            the createTime to set
 	 */
+
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
@@ -258,6 +294,7 @@ public class Trip
 	/**
 	 * @return the updateTime
 	 */
+
 	public String getUpdateTime()
 	{
 		return updateTime;
@@ -267,6 +304,7 @@ public class Trip
 	 * @param updateTime
 	 *            the updateTime to set
 	 */
+
 	public void setUpdateTime(String updateTime)
 	{
 		this.updateTime = updateTime;

@@ -20,6 +20,8 @@ public class ExceptionResourceBundle extends ListResourceBundle
 			{ BusinessException.TRIP_CREATE_FAILED, "Trip create failed." },
 			{ BusinessException.TRIP_UPDATE_FAILED, "Trip update failed." },
 			{ BusinessException.TRIP_DELETE_FAILED, "Trip delete failed." },
+			{ BusinessException.TRIP_BOOK_FAILED, "Trip book failed." },
+			{ BusinessException.TRIP_UNBOOK_FAILED, "Trip unbook failed." },
 
 			// Vehicle Exceptions
 			{ BusinessException.VEHICLE_NOT_FOUND, "Vehicle does not exist." },
@@ -31,6 +33,9 @@ public class ExceptionResourceBundle extends ListResourceBundle
 
 			// User Exceptions
 			{ BusinessException.USER_NOT_FOUND, "User does not exist." },
+			{ BusinessException.USER_SESSION_INVALID, "No valid session." },
+			{ BusinessException.USER_INSERT_FAILED, "User not created." },
+			{ BusinessException.USER_LOGIN_FAILED, "Login failed." },
 
 			// System Exceptions
 			{ BusinessException.MYSQL_ERROR, "Internal Server Error." },

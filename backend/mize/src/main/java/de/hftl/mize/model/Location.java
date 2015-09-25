@@ -1,5 +1,6 @@
 package de.hftl.mize.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Represents a location
@@ -7,6 +8,7 @@ package de.hftl.mize.model;
  * @author Tobias
  *
  */
+@XmlRootElement(name = "location")
 public class Location
 {
 
@@ -54,6 +56,7 @@ public class Location
 	/**
 	 * @return the street
 	 */
+
 	public String getStreet()
 	{
 		return street;
@@ -71,6 +74,7 @@ public class Location
 	/**
 	 * @return the streetNumber
 	 */
+
 	public String getStreetNumber()
 	{
 		return streetNumber;
@@ -88,6 +92,7 @@ public class Location
 	/**
 	 * @return the zipCode
 	 */
+
 	public String getZipCode()
 	{
 		return zipCode;
@@ -105,6 +110,7 @@ public class Location
 	/**
 	 * @return the city
 	 */
+
 	public String getCity()
 	{
 		return city;
@@ -114,6 +120,7 @@ public class Location
 	 * @param city
 	 *            the city to set
 	 */
+
 	public void setCity(String city)
 	{
 		this.city = city;
@@ -122,6 +129,7 @@ public class Location
 	/**
 	 * @return the country
 	 */
+
 	public Country getCountry()
 	{
 		return country;
@@ -131,6 +139,7 @@ public class Location
 	 * @param country
 	 *            the country to set
 	 */
+
 	public void setCountry(Country country)
 	{
 		this.country = country;
@@ -139,6 +148,7 @@ public class Location
 	/**
 	 * @return the geoCoordinate
 	 */
+
 	public Coordinate getGeoCoordinate()
 	{
 		return geoCoordinate;
@@ -148,6 +158,7 @@ public class Location
 	 * @param geoCoordinate
 	 *            the geoCoordinate to set
 	 */
+
 	public void setGeoCoordinate(Coordinate geoCoordinate)
 	{
 		this.geoCoordinate = geoCoordinate;

@@ -18,6 +18,8 @@ public class BusinessException extends BaseBusinessException
 	public static final String	TRIP_CREATE_FAILED		= "TRIP.CREATE.FAILED";
 	public static final String	TRIP_UPDATE_FAILED		= "TRIP.UPDATE.FAILED";
 	public static final String	TRIP_DELETE_FAILED		= "TRIP.DELETE.FAILED";
+	public static final String	TRIP_BOOK_FAILED		= "TRIP.BOOK.FAILED";
+	public static final String	TRIP_UNBOOK_FAILED		= "TRIP.UNBOOK.FAILED";
 
 	public static final String	VEHICLE_NOT_FOUND		= "VEHICLE.NOT.FOUND";
 	public static final String	VEHICLE_CREATE_FAILED	= "VEHICLE.CREATE.FAILED";
@@ -31,11 +33,12 @@ public class BusinessException extends BaseBusinessException
 	public static final String	LOCATION_DELETE_FAILED	= "LOCATION.DELETE.FAILED";
 
 	public static final String	USER_NOT_FOUND			= "USER.NOT.FOUND";
+	public static final String	USER_SESSION_INVALID	= "USER.SESSION.INVALID";
+	public static final String	USER_INSERT_FAILED		= "USER.INSERT.FAILED";
+	public static final String	USER_LOGIN_FAILED		= "USER.LOGIN.FAILED";
 
 	public static final String	MYSQL_ERROR				= "MYSQL.ERROR";
 	public static final String	SYSTEM_ERROR			= "SYSTEM.ERROR";
-
-	
 
 	public BusinessException(String errorCode)
 	{
